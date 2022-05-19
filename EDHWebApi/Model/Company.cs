@@ -14,9 +14,13 @@ public class Company
     [JsonPropertyName("Email")]
     public string Email { get; set; }
 
+    [JsonPropertyName("CreationDate")]
+    public DateTime CreationDate { get; set; }
+
     public Company(string name, string email)
     {
         Name = name;
         Email = email;
+        CreationDate = DateTime.Now;
     }
 }

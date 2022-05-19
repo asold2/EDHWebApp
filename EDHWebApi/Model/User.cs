@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace EDHWebApp.Model;
 
-public abstract class User
+public class User
 {
     [JsonPropertyName("UserId"), Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -32,9 +32,19 @@ public abstract class User
         IsAdmin = isAdmin;
         VerifiedUser = verifiedUser;
     }
+    public void GetFromParent(User user)
+    {
+        this.Email = user.Email;
+        this.Name = user.Name;
+        this.Surname = user.Name;
+        this.IsAdmin = user.IsAdmin;
+        this.MyCompany = user.MyCompany;
+        this.VerifiedUser = user.VerifiedUser;
+    }
 
+    [JsonConstructorAttribute]
     protected User()
     {
-        throw new NotImplementedException();
+        
     }
 }

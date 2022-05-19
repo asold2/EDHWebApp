@@ -1,6 +1,10 @@
-﻿namespace EDHWebApp.Data;
+﻿using EDHWebApp.Model;
 
-public class ICompaniesData
+namespace EDHWebApp.Data;
+
+public interface ICompaniesData
 {
-    
+    Task RegisterCompany(Company company);
+    Task<IList<Company>> GetAllCompanies();
+
 }

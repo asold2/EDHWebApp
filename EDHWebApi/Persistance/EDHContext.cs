@@ -21,9 +21,10 @@ public class EDHContext : DbContext
         modelBuilder.Entity<RegisteredUser>().ToTable("RegisteredUsers");
         modelBuilder.Entity<Admin>().ToTable("Admins");
         modelBuilder.Entity<Company>().ToTable("Companies");
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EDHContext).Assembly);
 
-       // modelBuilder.Entity<CourseAssignment>()
-         //   .HasKey(c => new { c.CourseID, c.InstructorID });
+        // modelBuilder.Entity<CourseAssignment>()
+        //   .HasKey(c => new { c.CourseID, c.InstructorID });
     }
  
 }

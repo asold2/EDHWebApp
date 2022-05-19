@@ -18,4 +18,6 @@ public class RegisteredUser : User
         Username = username;
         Password = password;
     }
+
+  
 }
