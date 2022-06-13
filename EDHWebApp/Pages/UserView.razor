@@ -1,0 +1,55 @@
+﻿@page "/UserView"
+@using System.Net.Mime
+@using System.Drawing
+@inject IJSRuntime JSRuntime
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Drawing
+@using SixLabors.ImageSharp.Drawing.Processing
+@using SixLabors.ImageSharp.Processing;
+@using SixLabors.ImageSharp.Formats.Jpeg
+@using SixLabors.Fonts
+@using System.Net.Http
+@using System.IO
+<h3>UserView</h3>
+
+<h1>EDH Webcam</h1>
+<video id="videoFeed" width="320" height="240" /><canvas class="d-none" id="currentFrame" width="320" height="240" /><br />
+<button class="btn btn-primary mb-3" @onclick="CaptureFrame">Capture Frame</button> <br />
+@if (!string.IsNullOrEmpty(frameUri))
+{
+    <img src="@frameUri" />
+}
+
+
+
+
+@code {
+
+    private string captionText;
+    private string frameUri;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("startVideo", "videoFeed");
+        
+   
+    }
+    
+    
+    private async Task CaptureFrame()
+    {
+        await JSRuntime.InvokeAsync<String>("getFrame", "videoFeed", "currentFrame", DotNetObjectReference.Create(this));
+    }
+    [JSInvokable]
+    public void ProcessImage(string imageString)
+    {
+        byte[] imageData = Convert.FromBase64String(imageString);
+
+    //Do image processing here
+    }
+    
+    
+    
+   
+    
+}

@@ -12,6 +12,8 @@ public class Company
     [JsonPropertyName("Name")]
     public string Name { get; set; }
     [JsonPropertyName("Email")]
+    [DataType(DataType.EmailAddress)]
+
     public string Email { get; set; }
 
     [JsonPropertyName("CreationDate")]

@@ -1,7 +1,10 @@
+using Client.Authentication;
+using Client.Data.Validation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using EDHWebApp.Data;
 using EDHWebApp.Persistance;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<ICompaniesData, CompanyDataService>();
+builder.Services.AddSingleton<IUsersData, IUserDataService>();
+builder.Services.AddSingleton<IUserLogInService, CloudUserLogInService>();
+builder.Services.AddSingleton<IEmailSender, EmailSenderImpl>();
 
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("IsAdmin", a=> a.RequireAuthenticatedUser().RequireClaim("Role", "Admin"));
+    options.AddPolicy("IsUser", a=> a.RequireAuthenticatedUser().RequireClaim("Role", "User"));
+
+});
 
 
 var app = builder.Build();

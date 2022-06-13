@@ -59,7 +59,19 @@ namespace EDHWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -73,36 +85,6 @@ namespace EDHWebApp.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("EDHWebApp.Model.Admin", b =>
-                {
-                    b.HasBaseType("EDHWebApp.Model.User");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.ToTable("Admins", (string)null);
-                });
-
-            modelBuilder.Entity("EDHWebApp.Model.RegisteredUser", b =>
-                {
-                    b.HasBaseType("EDHWebApp.Model.User");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.ToTable("RegisteredUsers", (string)null);
-                });
-
             modelBuilder.Entity("EDHWebApp.Model.User", b =>
                 {
                     b.HasOne("EDHWebApp.Model.Company", "MyCompany")
@@ -112,24 +94,6 @@ namespace EDHWebApp.Migrations
                         .IsRequired();
 
                     b.Navigation("MyCompany");
-                });
-
-            modelBuilder.Entity("EDHWebApp.Model.Admin", b =>
-                {
-                    b.HasOne("EDHWebApp.Model.User", null)
-                        .WithOne()
-                        .HasForeignKey("EDHWebApp.Model.Admin", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EDHWebApp.Model.RegisteredUser", b =>
-                {
-                    b.HasOne("EDHWebApp.Model.User", null)
-                        .WithOne()
-                        .HasForeignKey("EDHWebApp.Model.RegisteredUser", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

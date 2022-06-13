@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using Client.Authentication
+@inherits LayoutComponentBase
+@inject NavigationManager _navigationManager
+@inject AuthenticationStateProvider _authenticationStateProvider
 
 <PageTitle>EDHWebApp</PageTitle>
 
@@ -6,6 +9,15 @@
     <div class="sidebar">
         <NavMenu/>
     </div>
+    
+  
+    
+    <div class="main">
+        <div class="top-row px-4">
+            <a class="logout" @onclick="@LogOut">LogOut</a>
+        </div>
+    </div>
+    
 
     <main>
         <div class="top-row px-4">
@@ -17,3 +29,15 @@
         </article>
     </main>
 </div>
+
+@code
+{
+    /// <summary>
+    /// Method used for logout function.
+    /// </summary>
+    private async Task LogOut()
+    {
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).Logout();
+        _navigationManager.NavigateTo("/");
+    }
+}
