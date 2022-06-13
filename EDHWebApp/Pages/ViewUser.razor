@@ -1,0 +1,102 @@
+﻿@page "/ViewUser/{companyid}/{companyname}/{userId}"
+@using EDHWebApp.Model
+@using EDHWebApp.Data
+@inject IUsersData UsersData
+@inject ICompaniesData CompaniesData
+<h3>ViewUser</h3>
+
+<EditForm Model="@user" OnValidSubmit="@RegisterUser">
+     <div class="container mt-3">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    
+    <div>Name: @user.Name</div>
+    <div>Surname: @user.Surname</div>
+    <div>Email: @user.Email</div>
+    <div>Company Name: @companyname</div>
+    <div>Admin Status: @isAdmin</div>
+    <div>Verified Status: @isVerified</div>
+
+    <div class="form-group">Set Username:
+        <InputText  @bind-Value="@user.UserName" style="margin-left: 3em"/>
+    </div>
+    <div class="form-group">Set Password:
+        <InputText  @bind-Value="@user.Password" style="margin-left: 2em"/>
+    </div>
+    
+     <p class="action">
+            <button class="btn btn-success">Save</button>
+        </p>
+    
+    <div style="color: red; size: 20em">@CreationError</div>
+  
+     </div>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public string userId { get; set; }
+    [Parameter]
+    public string companyname { get; set; }
+    [Parameter]
+    public string companyid { get; set; }
+  
+
+    
+    private User user = new User();
+    private Company usersCompnay = new Company(); 
+    private string isVerified { get; set; }
+    private string isAdmin { get; set; }
+    string usernameError = "Introduce user name!";
+    string passwordError = "Introduce password!";
+    protected string CreationError = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        int companyId = Int32.Parse(companyid);
+
+        user = await UsersData.GetUserById(userId);
+        IList<Company> companies = await CompaniesData.GetAllCompanies();
+        usersCompnay = companies.FirstOrDefault(c => c.CompanyId == companyId);
+        Console.WriteLine(usersCompnay.Name + " " + usersCompnay.CompanyId);
+        if (!user.IsAdmin)
+        {
+            isAdmin = "No";
+        }
+        else
+        {
+            isAdmin = "Yes";
+        }
+        if (!user.VerifiedUser)
+        {
+            isVerified = "No";
+        }
+        else
+        {
+            isVerified = "Yes";
+        }
+        user.MyCompany = usersCompnay;
+
+    }
+
+    private async void RegisterUser()
+    {
+        if (user.Password != "" && user.UserName != "")
+        {
+            Console.WriteLine(user.UserName);
+            Console.WriteLine(user.Password);
+            user.VerifiedUser = true;
+            await UsersData.RegisterUser(user);
+        }
+        else
+        {
+            CreationError = "There is some data about the animal that has not been filled out," +
+                            "or has not been filled correctly!";
+        }
+
+
+
+    }
+
+}

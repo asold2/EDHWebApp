@@ -1,0 +1,22 @@
+
+table, th, td {
+    border: 0.5px solid;
+}
+table{
+    width: 100%;
+    text-align: center;
+    padding: 1em;
+}
+tr:hover {background-color: #e6dbb9;}
+tr:nth-child(even):hover {background-color: #e6dbb9;}
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+.form-group{
+    padding: 0.3em;
+
+}
+.edit_form{
+   align-items: center;
+    /*justify-content: center;*/
+}
+

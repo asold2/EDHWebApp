@@ -1,0 +1,216 @@
+﻿@page "/Company/{companyId}"
+@using EDHWebApp.Model
+@using EDHWebApp.Data
+@inject NavigationManager NavigationManager;
+
+@using Microsoft.AspNetCore.Mvc
+
+
+@inject ICompaniesData CompaniesData;
+@inject IUsersData UsersData;
+<h3>Add User</h3>
+
+
+
+    <EditForm Model="@user" OnValidSubmit="@AddUser" 
+              style="align-content: center"
+    >
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        
+        <div class="form-group">Name:
+            <InputText @bind-Value="@user.Name" style="margin-left: 3em"/>
+        </div>
+        <div class="form-group">Surname:
+            <InputText @bind-Value="@user.Surname" style="margin-left: 2em"/>
+        </div>
+        <div class="form-group">Email:
+            <InputText  @bind-Value="@user.Email" style="margin-left: 3em"/>
+        </div>
+    
+        <div class="form-group">Company:
+            <InputSelect style="margin-left: 3em" ValueExpression="@(()=>companyname)"
+                         Value="@company.Name"
+                         ValueChanged="@((string value) => OnValueChanged(value ))">
+                @foreach (var comp in companies)
+                {
+                    <option > @comp.Name </option>
+                }
+            </InputSelect>
+        </div>  
+        <div class="form-group">Admin:
+            <InputSelect ValueExpression="@(()=>user.IsAdmin)"
+                         Value="@user.IsAdmin"
+                         ValueChanged="@((bool value) => OnChangeAdminStatus(value))">
+                        
+                <option value="true"> Yes </option>
+                <option value="false"> No </option>
+                            
+            </InputSelect>
+        </div>  
+        <div class="form-group">Verified:
+            <InputSelect ValueExpression="@(()=>user.VerifiedUser)"
+                         Value="@user.VerifiedUser"
+                         ValueChanged="@((bool value) => OnChangeVerifiedStatus(value))">
+                            
+                <option value="true"> Yes </option>
+                <option value="false"> No </option>
+                                
+            </InputSelect>
+        </div>
+        <p class="action">
+            <button class="btn btn-success" type="submit">Add User</button>
+        </p>
+    </EditForm>
+    
+    
+    @if (companyUsers == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else if (!companyUsers.Any())
+    {
+        <p>
+            <em>There are no users to show</em>
+        </p>
+    }
+    else
+    {
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Company Name</th>
+                <th>Is Admin</th>
+                <th>Is Verified</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var userTemp in companyUsers)
+            {
+                <tr>
+                    <td>@userTemp.UserId</td>
+                    <td>@userTemp.Name</td>
+                    <td>@userTemp.Surname</td>
+                    <td>@userTemp.Email</td>
+                    <td>@companyname</td>
+                    <td>@userTemp.IsAdmin.ToString()</td>
+                    <td>@userTemp.VerifiedUser.ToString()</td>
+                    <td> 
+                        <button class="btn btn-success" @onclick="() => EditUser(userTemp.UserId)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteUser(userTemp)">Delete</button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+    
+        </table>
+
+    
+    
+
+
+@code {
+
+    [Parameter]
+    public string companyId { get; set; }
+
+
+    private User user = new User();
+    private IList<User> companyUsers = new List<User>();
+    private IList<Company> companies = new List<Company>();
+    Company company = new Company();
+    int companyid = 0;
+    string companyname = "";
+    private string isVerified { get; set; }
+    private string isAdmin { get; set; }
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        Console.WriteLine("Company Id" + companyId);
+        companies = await CompaniesData.GetAllCompanies();
+        companyid = Int32.Parse(companyId);
+        company = companies.FirstOrDefault(c => c.CompanyId == companyid);
+        companyname = company.Name;
+        user.MyCompany = company;
+        companyUsers = await UsersData.GetAllUsersByCompanyId(companyid);
+        
+        if (!user.IsAdmin)
+        {
+            isAdmin = "No";
+        }
+        else
+        {
+            isAdmin = "Yes";
+        }
+        if (!user.VerifiedUser)
+        {
+            isVerified = "No";
+        }
+        else
+        {
+            isVerified = "Yes";
+        }
+
+    }
+
+ 
+    
+    private async void AddUser()
+    {
+        user.Password = "";
+        user.UserName = "";
+        user.Role = "User";
+        if(!companyUsers.Contains(user))
+        {
+            companyUsers.Add(user);
+        }
+        await UsersData.AddUser(user);
+        
+    }
+
+    private void OnChange(Company company)
+    {
+        user.MyCompany = company;
+    }
+
+
+    private void OnValueChanged(string value)
+    {
+        company = companies.FirstOrDefault(c => c.Name.Equals(value));
+        user.MyCompany = company;
+    }
+
+    private void OnChangeAdminStatus(bool value)
+    {
+        user.IsAdmin = value;
+    }
+
+    private void OnChangeVerifiedStatus(bool value)
+    {
+        user.VerifiedUser = value;
+    }
+
+    private void EditUser(int userId)
+    {
+        NavigationManager.NavigateTo($"/ViewUser/{companyid}/{companyname}/{userId}");
+    }
+    
+    private  void DeleteUser(User user)
+    {
+        UsersData.RemoveUser(user.UserId);
+        companyUsers.Remove(user);
+
+    }
+
+}    
+}

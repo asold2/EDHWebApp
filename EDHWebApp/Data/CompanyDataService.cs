@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using EDHWebApp.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EDHWebApp.Data;
 
@@ -30,8 +31,18 @@ public class CompanyDataService : ICompaniesData
         await HttpClient.PostAsync(uri + "/new/company/", content);
     }
 
-    public Task<IList<Company>> GetAllCompanies()
+    public async Task<IList<Company>> GetAllCompanies()
     {
-        throw new NotImplementedException();
+        string receivedMessage = await HttpClient.GetStringAsync(uri + "/companies/");
+        IList<Company> companies = JsonSerializer.Deserialize<IList<Company>>(receivedMessage);
+        return companies;
+    }
+
+    public async Task DeleteCompany(int companyId)
+    {
+        Console.WriteLine("Sending request to delete company 1");
+        await HttpClient.DeleteAsync(uri + $"/company/removal/{companyId}");
+        Console.WriteLine("Sending request to delete company 2");
+
     }
 }

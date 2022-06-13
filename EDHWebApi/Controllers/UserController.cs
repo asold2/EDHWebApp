@@ -16,6 +16,7 @@ public class UserController : Controller
         this.context = context;
     }
 
+    [Route("/users/")]
     [HttpGet]
     public async Task<IList<User>> GetAllUsers()
     {
@@ -32,12 +33,15 @@ public class UserController : Controller
     }
 
 
-    [Route("/new/user/")]
+    [Route("/user/")]
     [HttpPost]
     public async Task<ActionResult<User>> AddUserAsync([FromBody] User user)
     {
+        Console.WriteLine("In adding method with user " + user.Name);
         if (!ModelState.IsValid)
         {
+            Console.WriteLine("bad request");
+
             return BadRequest(ModelState);
         }
 
@@ -52,7 +56,7 @@ public class UserController : Controller
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            throw e;
         }
         
         try
@@ -70,6 +74,70 @@ public class UserController : Controller
         }
     }
 
+    [Route("/users/{companyId:int}")]
+    [HttpGet]
+    public async Task<IList<User>> GetUsersByCompany([FromRoute] int companyId)
+    {
+        try
+        {
+            IList<User> usersToReturn = await context.Users.Where(u => u.MyCompany.CompanyId == companyId).ToListAsync();
+            return usersToReturn;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
 
+    [Route("/user/removal/{userId:int}")]
+    [HttpDelete]
+    public async Task RemoveUserFromCompany([FromRoute] int userId)
+    {
+        User userToDelete = context.Users.FirstOrDefault(u => u.UserId == userId);
+        try
+        {
+            context.Users.Remove(userToDelete);
+            await context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+
+    }
+
+    [Route("/user/{userId:int}")]
+    [HttpGet]
+    public async Task<User> GetUserByUserId([FromRoute] int userId)
+    {
+        User userToReturn =  await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+        return userToReturn;
+    }
+
+    [Route("/registration/")]
+    [HttpPut]
+    public async Task<ActionResult<User>> RegisterUser([FromBody] User user)
+    {
+
+        Console.WriteLine("In registration method");
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            context.Update(user);
+            await context.SaveChangesAsync();
+            return   Accepted($"/{user.UserId}", user);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw e;
+        }
+        
+    }
 
 }
