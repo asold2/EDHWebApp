@@ -40,11 +40,13 @@ namespace EDHWebApi.Controllers;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+                
             }
             
             try
             {
-                Company existentcompany = _edhContext.Companies.FirstOrDefault(u => u.Email.Equals(company.Email));
+               
+                Company existentcompany = _edhContext.Companies.Where(u => u.Email.Equals(company.Email)).FirstOrDefault();
                 if (existentcompany != null)
                 {
                     return StatusCode(403);
@@ -55,10 +57,9 @@ namespace EDHWebApi.Controllers;
                 Console.WriteLine(e);
                 throw;
             }
-            
-
             try
             {
+                company.CreationDate = DateTime.Now;
                 await _edhContext.Companies.AddAsync(company);
                 await _edhContext.SaveChangesAsync();
                 return Created($"/{company.CompanyId}", company);
@@ -69,6 +70,25 @@ namespace EDHWebApi.Controllers;
                 return StatusCode(500, e.Message);
             }
 
+        }
+
+        [Route("/company/removal/{CompanyId:int}")]
+        [HttpDelete]
+        public async Task RemoveCompanyAsync([FromRoute] int CompanyId)
+        {
+
+            try
+            {
+                Company company = _edhContext.Companies.FirstOrDefault(c => c.CompanyId == CompanyId);
+                _edhContext.Companies.Remove(company);
+                 await _edhContext.SaveChangesAsync();
+                 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
         }
 
     }

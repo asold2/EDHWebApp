@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace EDHWebApp.Model;
@@ -9,11 +10,17 @@ public class User
     [JsonPropertyName("UserId"), Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int UserId { get; set; }
+    [Required (ErrorMessage = "A user must have a name!")]
     [JsonPropertyName("Name")]
     public string Name { get; set; }
+    
+    [Required (ErrorMessage = "A user must have a surname!")]
     [JsonPropertyName("Surname")]
     public string Surname { get; set; }
+    
+    [Required (ErrorMessage = "A user must have an email!")]
     [JsonPropertyName("Email")]
+    [DataType(DataType.EmailAddress, ErrorMessage = "Must be email format!")]
     public string Email { get; set; }
     [JsonPropertyName("MyCompany")]
     public Company MyCompany { get; set; }
@@ -21,6 +28,17 @@ public class User
     public bool IsAdmin { get; set; }
     [JsonPropertyName("VerifiedUser")]
     public bool VerifiedUser { get; set; }
+    [JsonPropertyName("Role")]
+
+    public string Role { get; set; }
+
+    [JsonPropertyName("username")]
+
+    public string UserName { get; set; }
+    [JsonPropertyName("password")]
+ 
+
+    public string Password { get; set; }
 
 
     public User(string name, string surname, string email, Company myCompany, bool isAdmin, bool verifiedUser)
@@ -31,19 +49,18 @@ public class User
         this.MyCompany = myCompany;
         IsAdmin = isAdmin;
         VerifiedUser = verifiedUser;
-    }
-    public void GetFromParent(User user)
-    {
-        this.Email = user.Email;
-        this.Name = user.Name;
-        this.Surname = user.Name;
-        this.IsAdmin = user.IsAdmin;
-        this.MyCompany = user.MyCompany;
-        this.VerifiedUser = user.VerifiedUser;
+        Role = "User";
     }
 
+    public User(string userName, string password)
+    {
+        this.Password = password;
+        this.UserName = userName;
+    }
+
+
     [JsonConstructorAttribute]
-    protected User()
+    public User()
     {
         
     }

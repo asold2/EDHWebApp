@@ -2,6 +2,7 @@
 using EDHWebApp.Model;
 using EDHWebApp.Persistance;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EDHWebApi.Controllers;
 
@@ -16,11 +17,11 @@ public class RegisteredUserController : Controller
         this.context = context;
     }
 
-    [Route("/new/registration/{userName}/{password}")]
+    [Route("/new/registration/")]
     [HttpPost]
-    public async Task<ActionResult<RegisteredUser>> AddRegisteredUser([FromBody] User user, [FromRoute] string userName,
-        [FromRoute] string password)
+    public async Task<ActionResult<User>> AddRegisteredUser([FromBody] User user)
     {
+        Console.WriteLine(user.UserName + user.Password + "AAAAAAAA");
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -28,36 +29,47 @@ public class RegisteredUserController : Controller
 
         try
         {
-            User tempUser = context.Users.FirstOrDefault(u => u.UserId == user.UserId);
-            // RegisteredUser ru = new RegisteredUser
-            // {
-            //     Username = userName,
-            //     Password = password,
-            //     UserId = tempUser.UserId,
-            //     Name = tempUser.Name,
-            //     Surname = tempUser.Surname,
-            //     Email = tempUser.Email,
-            //     IsAdmin = tempUser.IsAdmin,
-            //     MyCompany = tempUser.MyCompany,
-            //     VerifiedUser = tempUser.VerifiedUser
-            // };
-            RegisteredUser ru = new RegisteredUser(userName, password);
-            context.Users.Remove(tempUser);
+            // User tempUser = context.Users.FirstOrDefault(u => u.UserId == user.UserId);
+            
 
-            ru.GetFromParent(tempUser);
-            ru.UserId = tempUser.UserId;
-            Console.WriteLine(ru.Password + ru.Username + "!@!@!@");
-
-            Console.WriteLine(ru.Email+"!!!!" + ru.UserId);
-            await context.RegisteredUsers.AddAsync(ru);
-            // await context.SaveChangesAsync();
-            return Created($"/{ru.UserId}", ru);
+            
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+            return Created($"/{user.UserId}", user);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             return StatusCode(500, e.Message);
         }
+
+    }
+
+    [Route("/account")]
+    [HttpPost]
+    public async Task<User> AuthenticateUser([FromBody] User user)
+    {
+
+        Console.WriteLine(user.UserName );
+        Console.WriteLine(user.Password );
+
+        if (user.UserName != "string" && user.Password != "string")
+        {
+            try
+            {
+                User userToReturn =
+                    await context.Users.FirstAsync(u => u.UserName == user.UserName && u.Password == user.Password);
+                return userToReturn;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        return null;
+
+
 
     }
 
