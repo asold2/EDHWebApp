@@ -4,15 +4,11 @@ table, th, td {
 }
 table{
     width: 100%;
-    text-align: center;
-    padding: 1em;
+    /*text-align: center;*/
 }
 tr:hover {background-color: #e6dbb9;}
 tr:nth-child(even):hover {background-color: #e6dbb9;}
 tr:nth-child(even) {background-color: #f2f2f2;}
 
 .form-group{
-    padding: 0.3em;
-
-
 }

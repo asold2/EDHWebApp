@@ -231,3 +231,8 @@ button:hover {
     font-family: 'Poppins', sans-serif;
     font-size: smaller;
 }
+#abt_button{
+    position: absolute;
+    right: 0;
+    top: 0;
+}

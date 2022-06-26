@@ -17,6 +17,7 @@ namespace EDHWebApi.Controllers;
             this._edhContext = edhContext;
         }
 
+        //Returns list of all companies
         [Route("/companies/")]
         [HttpGet]
         public async Task<IList<Company>> GetAllCompanies()
@@ -32,7 +33,7 @@ namespace EDHWebApi.Controllers;
                 return null;
             }
         }
-
+        //Add new company to database
         [Route("/new/company")]
         [HttpPost]
         public async Task<ActionResult<Company>> AddCompanyAsync([FromBody] Company company)
@@ -72,7 +73,10 @@ namespace EDHWebApi.Controllers;
 
         }
 
-        [Route("/company/removal/{CompanyId:int}")]
+        
+        //Remove company by it's Id
+            // The users under the company are not currently removed
+        [Route("/company/{CompanyId:int}")]
         [HttpDelete]
         public async Task RemoveCompanyAsync([FromRoute] int CompanyId)
         {
