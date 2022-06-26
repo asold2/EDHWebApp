@@ -9,25 +9,28 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/UserView" >
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <AuthorizeView Policy="IsAdmin">
-            <div class="nav-item px-3">
-                        <NavLink class="nav-link" href="/ViewCompanies">
-                            <span class="oi oi-plus" aria-hidden="true"></span> All Companies
-                        </NavLink>
-                    </div>
+        <AuthorizeView Policy="IsUser">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/UserView">
+                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </div>
         </AuthorizeView>
         
+        <AuthorizeView Policy="IsAdmin">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/ViewCompanies">
+                    <span class="oi oi-plus" aria-hidden="true"></span> All Companies
+                </NavLink>
+            </div>
+        </AuthorizeView>
+
         @* <div class="nav-item px-3"> *@
         @*     <NavLink class="nav-link" href="/ViewCompanies"> *@
         @*         <span class="oi oi-plus" aria-hidden="true"></span>  *@
         @*     </NavLink> *@
         @* </div> *@
-        
+
 
     </nav>
 </div>

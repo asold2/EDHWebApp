@@ -47,7 +47,7 @@ namespace Client.Pages
         /// <summary>
         /// Method used for navigating to the main page, when the username and password has been verified.
         /// </summary>
-    protected async Task LoadMainPage()
+        protected async Task LoadMainPage()
     {
         ErrorMessage = "";
         try
@@ -69,6 +69,12 @@ namespace Client.Pages
         }
 
     }
+
+        protected void About()
+        {
+            NavigationManager.NavigateTo("/About");
+        }
+
         /// <summary>
         /// Method used for navigating to the create account page
         /// </summary>

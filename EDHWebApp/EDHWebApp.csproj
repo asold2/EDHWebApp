@@ -13,13 +13,19 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Objectivity.Bot.BaseDialogs" Version="0.0.67" />
       <PackageReference Include="SixLabors.ImageSharp" Version="2.1.2" />
       <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta14" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+      <PackageReference Include="Syncfusion.Blazor.Popups" Version="20.1.0.61" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\EDHWebApi\EDHWebApi.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Icons" />
     </ItemGroup>
 
 </Project>

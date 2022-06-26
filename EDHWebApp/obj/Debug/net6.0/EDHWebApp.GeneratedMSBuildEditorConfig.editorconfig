@@ -31,6 +31,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlld1VzZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/About.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEFib3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -51,6 +55,10 @@ build_metadata.AdditionalFiles.CssScope = b-2yfb4xlbbl
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlld0NvbXBhbmllcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-xdrd5z0d5s
 
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEVtcHR5TGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-7aio8x9gty
+
 [C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/LoginCreateAccountLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luQ3JlYXRlQWNjb3VudExheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-2zq06qfv6b
@@ -58,6 +66,10 @@ build_metadata.AdditionalFiles.CssScope = b-2zq06qfv6b
 [C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-zviu7at80f
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/MainLayoutSU.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXRTVS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-zeytyuuayc
 
 [C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=

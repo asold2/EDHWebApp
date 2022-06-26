@@ -41,7 +41,7 @@ public class CompanyDataService : ICompaniesData
     public async Task DeleteCompany(int companyId)
     {
         Console.WriteLine("Sending request to delete company 1");
-        await HttpClient.DeleteAsync(uri + $"/company/removal/{companyId}");
+        await HttpClient.DeleteAsync(uri + $"/company/{companyId}");
         Console.WriteLine("Sending request to delete company 2");
 
     }

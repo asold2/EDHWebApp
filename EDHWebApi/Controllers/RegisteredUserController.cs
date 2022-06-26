@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using System.Net;
+using System.Net.Mail;
+using System.Xml;
 using EDHWebApp.Model;
 using EDHWebApp.Persistance;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +19,7 @@ public class RegisteredUserController : Controller
         this.context = context;
     }
 
+    //The unregistered user now has username and password
     [Route("/new/registration/")]
     [HttpPost]
     public async Task<ActionResult<User>> AddRegisteredUser([FromBody] User user)
@@ -29,7 +32,6 @@ public class RegisteredUserController : Controller
 
         try
         {
-            // User tempUser = context.Users.FirstOrDefault(u => u.UserId == user.UserId);
             
 
             
@@ -45,14 +47,11 @@ public class RegisteredUserController : Controller
 
     }
 
+    //User Authentication
     [Route("/account")]
     [HttpPost]
     public async Task<User> AuthenticateUser([FromBody] User user)
     {
-
-        Console.WriteLine(user.UserName );
-        Console.WriteLine(user.Password );
-
         if (user.UserName != "string" && user.Password != "string")
         {
             try
@@ -68,9 +67,38 @@ public class RegisteredUserController : Controller
         }
 
         return null;
-
-
-
     }
 
+    [HttpPost]
+    [Route("/reg/email")]
+    public async Task SendEmailForRegistration([FromBody] RegistrationUser regUser)
+    {
+        Console.WriteLine("received req for registration in API");
+        string messageToSend = "I, " + regUser.FullName + ", would like to request an account. I work at " + regUser.Company + ".\n My email is " + regUser.Email;
+        try
+        {
+            MailMessage message = new MailMessage();
+            SmtpClient smtp = new SmtpClient();
+            message.From = new MailAddress("edhtech2022@gmail.com");
+            message.To.Add(new MailAddress("asoldan1459@gmail.com"));
+            message.Subject = "Request Account";
+            message.IsBodyHtml = true;
+            message.Body = messageToSend;
+            smtp.Port = 587;
+            smtp.Host = "smtp.gmail.com";
+            smtp.UseDefaultCredentials = false;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.EnableSsl = true;
+            smtp.Credentials = new NetworkCredential("edhtech2022@gmail.com", "qlxsksjccfqtskyj");
+            
+            
+            smtp.Send(message);
+         
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        
+    }
 }

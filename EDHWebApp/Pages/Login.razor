@@ -4,6 +4,20 @@
 @inherits Client.Pages.LoginRazor
 
 
+
+<main>
+	<div class="top-row px-4">
+		<button id="abt_button" onclick="@About">About</button>
+	</div>
+
+</main>
+  
+
+
+@* <div class="top-row px-4"> *@
+@* 	<button onclick="@About">About</button> *@
+@* </div> *@
+
 <div class="container-login">
 	<div class="wrap-login">
 				
@@ -11,34 +25,43 @@
 			<b>Login</b>
 		</span>
 
-				<div class="wrap-input">
-					<span class="label-input">Username</span>
-					<input class="input" type="text" name="username" placeholder="Type your username" @bind="Username" @onkeyup="@Enter">
-					<span class="focus-input"></span>
-					<i class="fas fa-user-alt"></i>
-				</div>
+		<div class="wrap-input">
+			<span class="label-input">Username</span>
+			<input class="input" type="text" name="username" placeholder="Type your username" @bind="Username" @onkeyup="@Enter">
+			<span class="focus-input"></span>
+			<i class="fas fa-user-alt"></i>
+		</div>
 
-				<div class="wrap-input">
-					<span class="label-input">Password</span>
-					<input class="input" type="password" placeholder="Type your password" @bind="Password" @onkeyup="@Enter">
-					<span class="focus-input"></span>
-					<i class="fas fa-lock"></i>
-				</div>
+		<div class="wrap-input">
+			<span class="label-input">Password</span>
+			<input class="input" type="password" placeholder="Type your password" @bind="Password" @onkeyup="@Enter">
+			<span class="focus-input"></span>
+			<i class="fas fa-lock"></i>
+		</div>
 
 		<div class="wrap-login-btn">
 			<div class="login-bgbtn"></div>
 			<button @onclick="LoadMainPage" class="login-btn">
 				Login
 			</button>
+			
+		</div>
+		<div class="form-group">
+			<i src="../Icons/Outlook-icon.png"> Login with Outlook 365</i>
 		</div>
 		<div style="color:red">@ErrorMessage</div>
 				
 		<div class="wrap-SignUp">	
 			<a @onclick="LoadCreateAccount" class="signUp" href="#">Sign Up</a>
 		</div>
+		
+		<div>
+		</div>
 
 	</div>
 </div>
+
+
 
 	
 
