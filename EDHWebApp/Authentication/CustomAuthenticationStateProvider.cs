@@ -74,7 +74,13 @@ namespace Client.Authentication
         
         private ClaimsIdentity SetupClaimsForUser(User endUser)
         {
-            var claims = new List<Claim> {new("Role",  endUser.Role)};
+            string isVerified = "";
+            if (endUser.VerifiedUser)
+            {
+                isVerified = "isVerified";
+            }
+
+            var claims = new List<Claim> {new("Role",  endUser.Role), new ("isVerified", isVerified)};
 
             //Add a claim to check for the type of the subclass(EndUser)
             var identity = new ClaimsIdentity(claims, "apiauth_type");

@@ -1,5 +1,7 @@
-﻿@page "/Register"
+﻿@layout MainLayoutSU
+@page "/Register"
 @using EDHWebApp.Data
+@using EDHWebApp.Model
 @inject IEmailSender EmailSender
 @inject NavigationManager NavigationManager
 <h3>Register</h3>
@@ -43,9 +45,14 @@
     public string Email { get; set; }
     public string Company { get; set; }
 
-    private void RequestAccount()
+	RegistrationUser regUser = new RegistrationUser();
+
+    private async Task RequestAccount()
     {
-        EmailSender.sendAccountRequestEmailToAdmin(Email, Name ,Company);
+	    regUser.FullName = Name;
+	    regUser.Company = Company;
+	    regUser.Email = Email;
+        await EmailSender.sendAccountRequestEmailToAdmin(regUser);
         NavigationManager.NavigateTo("/");
     }
 

@@ -11,8 +11,8 @@
     </div>
     <main>
         <div class="top-row px-4">
-            <button @onclick="@OpenAbout">About</button>
-            <button class="logout" @onclick="@LogOut">LogOut</button>
+            <button onclick="@OpenAbout">About</button>
+            <button  onclick="@OpenLogin">LogIn</button>
 
         </div>
         @* <div class="top-row px-4"> *@
@@ -35,8 +35,14 @@
         _navigationManager.NavigateTo("/");
     }
 
-    public void OpenAbout()
+    private void OpenAbout()
     {
         _navigationManager.NavigateTo("/About");
+    }
+
+    private void OpenLogin()
+    {
+        _navigationManager.NavigateTo("/");
+
     }
 }
