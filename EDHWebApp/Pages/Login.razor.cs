@@ -94,6 +94,12 @@ namespace Client.Pages
             await LoadMainPage();
         }
     }
+
+    protected void OutlookLogin()
+    {
+        Console.WriteLine("Not working yet");
+    }
+
     }
     
 

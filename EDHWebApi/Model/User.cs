@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
-namespace EDHWebApp.Model;
+namespace EDHWebApi.Model;
 
 public class User
 {
@@ -59,7 +58,7 @@ public class User
     }
 
 
-    [JsonConstructorAttribute]
+    [JsonConstructor]
     public User()
     {
         

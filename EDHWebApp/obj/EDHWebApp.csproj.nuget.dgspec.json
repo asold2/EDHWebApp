@@ -143,6 +143,10 @@
               "target": "Package",
               "version": "[0.0.67, )"
             },
+            "Radzen.Blazor": {
+              "target": "Package",
+              "version": "[3.19.1, )"
+            },
             "SixLabors.ImageSharp": {
               "target": "Package",
               "version": "[2.1.2, )"

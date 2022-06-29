@@ -18,5 +18,7 @@ namespace Client.Data.Validation
 
         void setLoggedInRole(string cachedUserRole);
         string getLoggedInRole();
+        void setLoggedInId(int id);
+        int getLoggedInId();
     }
 }

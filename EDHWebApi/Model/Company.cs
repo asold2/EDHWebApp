@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace EDHWebApp.Model;
+namespace EDHWebApi.Model;
 
 public class Company
 {

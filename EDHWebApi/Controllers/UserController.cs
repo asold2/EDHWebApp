@@ -1,5 +1,5 @@
-﻿using EDHWebApp.Model;
-using EDHWebApp.Persistance;
+﻿using EDHWebApi.Model;
+using EDHWebApi.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

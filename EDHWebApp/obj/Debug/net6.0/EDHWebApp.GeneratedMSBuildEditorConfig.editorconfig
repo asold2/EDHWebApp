@@ -23,8 +23,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/UserView.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclZpZXcucmF6b3I=
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/RegitserCompany.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXRzZXJDb21wYW55LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/ViewUser.razor]
@@ -50,6 +50,10 @@ build_metadata.AdditionalFiles.CssScope = b-ifs1vc8jjw
 [C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-2yfb4xlbbl
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/UserView.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclZpZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-mj9xyh101r
 
 [C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/ViewCompanies.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlld0NvbXBhbmllcy5yYXpvcg==

@@ -63,6 +63,20 @@ public class EmailSenderImpl : IEmailSender
             "application/json"
         );
         await HttpClient.PostAsync(uri + "/reg/email", content);
-        Console.WriteLine("Sent registration request to API " + regUserAsJson);
+    }
+
+    public async  Task sendPictureToCompaniesEmail(PictureEmail pictureEmail)
+    {
+        string pictureEmailAsJson = JsonSerializer.Serialize(pictureEmail, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+        HttpContent content = new StringContent(
+            pictureEmailAsJson,
+            Encoding.UTF8,
+            "application/json"
+        );
+        await HttpClient.PostAsync(uri + "/picture", content);
+
     }
 }
