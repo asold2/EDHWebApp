@@ -20,6 +20,7 @@ namespace Client.Data.Validation
         private readonly HttpClient _httpClient;
 
         private string loggedInRole;
+        private int loggedInId;
         /// <summary>
         /// Constructor dependency injection.
         /// </summary>
@@ -84,6 +85,16 @@ namespace Client.Data.Validation
         public string getLoggedInRole()
         {
             return loggedInRole;
+        }
+
+        public int getLoggedInId()
+        {
+            return loggedInId;
+        }
+
+        public void setLoggedInId(int id)
+        {
+            loggedInId = id;
         }
     }
 }

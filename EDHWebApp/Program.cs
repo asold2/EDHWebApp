@@ -3,7 +3,6 @@ using Client.Data.Validation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using EDHWebApp.Data;
-using EDHWebApp.Persistance;
 using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);

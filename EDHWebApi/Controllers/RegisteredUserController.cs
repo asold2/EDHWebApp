@@ -1,8 +1,9 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Xml;
-using EDHWebApp.Model;
-using EDHWebApp.Persistance;
+using EDHWebApi.Model;
+using EDHWebApi.EmailSender;
+using EDHWebApi.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,11 +13,13 @@ namespace EDHWebApi.Controllers;
 [Route("[controller]")]
 public class RegisteredUserController : Controller
 {
+    private EmailSender.EmailSender _emailSender;
     private EDHContext context;
 
     public RegisteredUserController(EDHContext context)
     {
         this.context = context;
+        _emailSender = new EmailSenderImpl();
     }
 
     //The unregistered user now has username and password
@@ -71,33 +74,35 @@ public class RegisteredUserController : Controller
 
     [HttpPost]
     [Route("/reg/email")]
-    public async Task SendEmailForRegistration([FromBody] RegistrationUser regUser)
+    public async Task<ActionResult> SendEmailForRegistration([FromBody] RegistrationUser regUser)
     {
-        Console.WriteLine("received req for registration in API");
-        string messageToSend = "I, " + regUser.FullName + ", would like to request an account. I work at " + regUser.Company + ".\n My email is " + regUser.Email;
         try
         {
-            MailMessage message = new MailMessage();
-            SmtpClient smtp = new SmtpClient();
-            message.From = new MailAddress("edhtech2022@gmail.com");
-            message.To.Add(new MailAddress("asoldan1459@gmail.com"));
-            message.Subject = "Request Account";
-            message.IsBodyHtml = true;
-            message.Body = messageToSend;
-            smtp.Port = 587;
-            smtp.Host = "smtp.gmail.com";
-            smtp.UseDefaultCredentials = false;
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.EnableSsl = true;
-            smtp.Credentials = new NetworkCredential("edhtech2022@gmail.com", "qlxsksjccfqtskyj");
-            
-            
-            smtp.Send(message);
-         
+            _emailSender.SendRegistrationEmail(regUser);
+            return Ok();
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            return NotFound();
+            throw;
+        }
+
+    }
+
+
+    [HttpPost]
+    [Route("/picture")]
+    public async Task<ActionResult> ReceivePictureFromUser([FromBody] PictureEmail pictureEmail)
+    {
+        try
+        {
+            _emailSender.SendPictureFromUserToCompany(pictureEmail);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound();
+            throw;
         }
         
     }

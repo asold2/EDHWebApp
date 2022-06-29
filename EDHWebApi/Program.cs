@@ -1,4 +1,4 @@
-using EDHWebApp.Persistance;
+using EDHWebApi.Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
 

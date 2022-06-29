@@ -1,7 +1,7 @@
-﻿using EDHWebApp.Model;
+﻿using EDHWebApi.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace EDHWebApp.Persistance;
+namespace EDHWebApi.Persistance;
 
 public class EDHContext : DbContext
 {
