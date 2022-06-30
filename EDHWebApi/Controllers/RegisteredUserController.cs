@@ -4,8 +4,10 @@ using System.Xml;
 using EDHWebApi.Model;
 using EDHWebApi.EmailSender;
 using EDHWebApi.Persistance;
+using EDHWebApi.UserManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace EDHWebApi.Controllers;
 
@@ -15,11 +17,13 @@ public class RegisteredUserController : Controller
 {
     private EmailSender.EmailSender _emailSender;
     private EDHContext context;
+    private UserUpdater _userUpdater;
 
     public RegisteredUserController(EDHContext context)
     {
         this.context = context;
         _emailSender = new EmailSenderImpl();
+        _userUpdater = new UserUpdaterImpl(context);
     }
 
     //The unregistered user now has username and password
@@ -61,6 +65,9 @@ public class RegisteredUserController : Controller
             {
                 User userToReturn =
                     await context.Users.FirstAsync(u => u.UserName == user.UserName && u.Password == user.Password);
+                Console.WriteLine(userToReturn.MyCompany + "!!!!!!!");
+                Console.WriteLine(userToReturn.Name + "@@@@@@@@@@@");
+                
                 return userToReturn;
             }
             catch (Exception e)
@@ -94,14 +101,25 @@ public class RegisteredUserController : Controller
     [Route("/picture")]
     public async Task<ActionResult> ReceivePictureFromUser([FromBody] PictureEmail pictureEmail)
     {
+
+        User user = await context.Users.FirstAsync(u => u.UserId == pictureEmail.userId);
+        Console.WriteLine(user.MyCompany+ "!!!!!!!!!!!!!!!!!!!!");
+        Console.WriteLine(user.Email+ "!!!!!!!!!!!!!!!!!!!!");
+        Console.WriteLine(user.Role+ "!!!!!!!!!!!!!!!!!!!!");
+        Console.WriteLine(user.Surname+ "!!!!!!!!!!!!!!!!!!!!");
+        // Company company = await context.Companies.FirstAsync(c=>c.CompanyId==user.);       
+
+
         try
         {
-            _emailSender.SendPictureFromUserToCompany(pictureEmail);
+            _userUpdater.UpdateUserNumberOfRequests(pictureEmail.userId);
+
+            // _emailSender.SendPictureFromUserToCompany(pictureEmail, user);
             return Ok();
         }
         catch (Exception e)
         {
-            return NotFound();
+            return StatusCode(500, e.Message);
             throw;
         }
         

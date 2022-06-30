@@ -17,7 +17,7 @@ namespace EDHWebApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
 
-            modelBuilder.Entity("EDHWebApp.Model.Company", b =>
+            modelBuilder.Entity("EDHWebApi.Model.Company", b =>
                 {
                     b.Property<int>("CompanyId")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace EDHWebApp.Migrations
                     b.ToTable("Companies", (string)null);
                 });
 
-            modelBuilder.Entity("EDHWebApp.Model.User", b =>
+            modelBuilder.Entity("EDHWebApi.Model.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -58,6 +58,9 @@ namespace EDHWebApp.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("NumberOfRequests")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -85,9 +88,9 @@ namespace EDHWebApp.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("EDHWebApp.Model.User", b =>
+            modelBuilder.Entity("EDHWebApi.Model.User", b =>
                 {
-                    b.HasOne("EDHWebApp.Model.Company", "MyCompany")
+                    b.HasOne("EDHWebApi.Model.Company", "MyCompany")
                         .WithMany()
                         .HasForeignKey("MyCompanyCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)

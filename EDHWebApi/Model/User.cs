@@ -39,6 +39,9 @@ public class User
 
     public string Password { get; set; }
 
+    [JsonPropertyName("NumberOfRequests")]
+    public int NumberOfRequests { get; set; }
+
 
     public User(string name, string surname, string email, Company myCompany, bool isAdmin, bool verifiedUser)
     {

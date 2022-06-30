@@ -5,6 +5,9 @@ namespace EDHWebApi.Persistance;
 
 public class EDHContext : DbContext
 {
+    
+    
+    
     public DbSet<User> Users { get; set; }
     public DbSet<Company> Companies { get; set; }
 

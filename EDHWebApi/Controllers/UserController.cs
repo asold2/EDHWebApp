@@ -1,5 +1,6 @@
 ﻿using EDHWebApi.Model;
 using EDHWebApi.Persistance;
+using EDHWebApi.UserManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +11,12 @@ namespace EDHWebApi.Controllers;
 public class UserController : Controller
 {
     private EDHContext context;
+    private UserUpdater _userUpdater;
 
     public UserController(EDHContext context)
     {
         this.context = context;
+        _userUpdater = new UserUpdaterImpl(context);
     }
 
     [Route("/users/")]
@@ -37,11 +40,8 @@ public class UserController : Controller
     [HttpPost]
     public async Task<ActionResult<User>> AddUserAsync([FromBody] User user)
     {
-        Console.WriteLine("In adding method with user " + user.Name);
         if (!ModelState.IsValid)
         {
-            Console.WriteLine("bad request");
-
             return BadRequest(ModelState);
         }
 
@@ -120,7 +120,6 @@ public class UserController : Controller
     public async Task<ActionResult<User>> RegisterUser([FromBody] User user)
     {
 
-        Console.WriteLine("In registration method");
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -128,8 +127,9 @@ public class UserController : Controller
 
         try
         {
-            context.Update(user);
-            await context.SaveChangesAsync();
+            _userUpdater.RegisterUser(user);
+            // context.Update(user);
+            // await context.SaveChangesAsync();
             return   Accepted($"/{user.UserId}", user);
         }
         catch (Exception e)
