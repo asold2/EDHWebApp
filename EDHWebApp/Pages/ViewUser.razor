@@ -3,6 +3,7 @@
 @using EDHWebApp.Data
 @inject IUsersData UsersData
 @inject ICompaniesData CompaniesData
+@inject NavigationManager NavigationManager
 <h3>ViewUser</h3>
 
 <EditForm Model="@user" OnValidSubmit="@RegisterUser">
@@ -51,10 +52,12 @@
     string usernameError = "Introduce user name!";
     string passwordError = "Introduce password!";
     protected string CreationError = "";
+    int companyId = 0;
+
 
     protected override async Task OnInitializedAsync()
     {
-        int companyId = Int32.Parse(companyid);
+        companyId = Int32.Parse(companyid);
 
         user = await UsersData.GetUserById(userId);
         IList<Company> companies = await CompaniesData.GetAllCompanies();
@@ -88,6 +91,7 @@
             Console.WriteLine(user.Password);
             user.VerifiedUser = true;
             await UsersData.RegisterUser(user);
+            NavigationManager.NavigateTo($"/Company/{companyid}");
         }
         else
         {

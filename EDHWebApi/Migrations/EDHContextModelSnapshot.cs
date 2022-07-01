@@ -17,7 +17,7 @@ namespace EDHWebApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
 
-            modelBuilder.Entity("EDHWebApp.Model.Company", b =>
+            modelBuilder.Entity("EDHWebApi.Model.Company", b =>
                 {
                     b.Property<int>("CompanyId")
                         .ValueGeneratedOnAdd()
@@ -39,10 +39,13 @@ namespace EDHWebApp.Migrations
                     b.ToTable("Companies", (string)null);
                 });
 
-            modelBuilder.Entity("EDHWebApp.Model.User", b =>
+            modelBuilder.Entity("EDHWebApi.Model.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CompanyId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
@@ -52,12 +55,12 @@ namespace EDHWebApp.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MyCompanyCompanyId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("NumberOfRequests")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -80,16 +83,16 @@ namespace EDHWebApp.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("MyCompanyCompanyId");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("EDHWebApp.Model.User", b =>
+            modelBuilder.Entity("EDHWebApi.Model.User", b =>
                 {
-                    b.HasOne("EDHWebApp.Model.Company", "MyCompany")
+                    b.HasOne("EDHWebApi.Model.Company", "MyCompany")
                         .WithMany()
-                        .HasForeignKey("MyCompanyCompanyId")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -76,6 +76,8 @@ namespace Client.Authentication
         
         private ClaimsIdentity SetupClaimsForUser(User endUser)
         {
+
+            Console.WriteLine(endUser.Role + "@@@@@@@@@@@@@@@@");
             string isVerified = "";
             if (endUser.VerifiedUser)
             {

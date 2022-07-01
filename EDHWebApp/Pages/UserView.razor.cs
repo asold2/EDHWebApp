@@ -2,6 +2,8 @@
 using EDHWebApp.Data;
 using EDHWebApp.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace EDHWebApp.Pages;
 
@@ -23,9 +25,10 @@ using System.IO;
 [Authorize(Policy = "IsVerified")]
 public class UserViewRazor : ComponentBase
 {
+    protected string image = "";
     protected string captionText = "";
     protected string frameUri = "";
-    protected byte[] imageData = new byte [10000];
+    // protected byte[] imageData = new byte [10000];
     
     protected PictureEmail _pictureEmail = new PictureEmail();
         
@@ -48,12 +51,29 @@ public class UserViewRazor : ComponentBase
      public async Task  CaptureFrame()
     {
         int id = _userLogInService.getLoggedInId();
-        _pictureEmail.Picture = imageData;
         _pictureEmail.userId = id;
-        // await _jsRuntime.InvokeAsync<String>("getFrame", "videoFeed", "currentFrame", DotNetObjectReference.Create(this));
         await _emailSender.sendPictureToCompaniesEmail(_pictureEmail);
     }
-   
+
+     public async Task GetPicture(InputFileChangeEventArgs e)
+     {
+         var imageFile = e.File;
+
+         var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), Guid.NewGuid().ToString());
+         await using var fs = new FileStream(path, FileMode.Create);
+         await imageFile.OpenReadStream(imageFile.Size).CopyToAsync(fs);
+         var bytes = new byte[imageFile.Size];
+         fs.Position = 0;
+         await fs.ReadAsync(bytes);
+         fs.Close();
+         File.Delete(path);
+         string image = Convert.ToBase64String(bytes);
+         _pictureEmail.Picture = image;
+
+
+
+     }
+
 
 
 }

@@ -67,6 +67,9 @@ public class EmailSenderImpl : IEmailSender
 
     public async  Task sendPictureToCompaniesEmail(PictureEmail pictureEmail)
     {
+
+      
+        
         string pictureEmailAsJson = JsonSerializer.Serialize(pictureEmail, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
