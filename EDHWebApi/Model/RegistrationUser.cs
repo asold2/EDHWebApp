@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EDHWebApp.Model;
+namespace EDHWebApi.Model;
 
 public class RegistrationUser
 {

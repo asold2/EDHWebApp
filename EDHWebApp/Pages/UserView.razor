@@ -1,7 +1,9 @@
-﻿@page "/UserView"
+﻿@inherits UserViewRazor
+@page "/UserView"
 @using System.Net.Mime
 @using System.Drawing
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime _jsRuntime
+@inject IEmailSender _emailSender
 @using SixLabors.ImageSharp
 @using SixLabors.ImageSharp.Drawing
 @using SixLabors.ImageSharp.Drawing.Processing
@@ -10,47 +12,55 @@
 @using SixLabors.Fonts
 @using System.Net.Http
 @using System.IO
+@using System.Runtime.CompilerServices
+@using EDHWebApp.Data
+<EditForm Model="_pictureEmail">
+    <div class="main_container">
+        <div class="col-md-12">
+        </div>
+        <div class="text">
+            <h1>EDH Camera</h1>
+        </div>
 
-<h3>UserView</h3>
+        <div>
+            <InputFile runant="server" id="selectedPicture" type="file" name="image" accept="image/*" capture="environment" OnChange="GetPicture"></InputFile>
+        </div>
+        <div>
+            <button class="button" @onclick="CaptureFrame">Send Picture</button> <br />
+        </div>
+    
+        <div class="form-group">Payment Type:
+            <InputSelect  Value="@_pictureEmail.PaymentType" style="margin-left: 3em" ValueExpression="@(()=>_pictureEmail.PaymentType)"
+                          ValueChanged="@((string value) => OnValueChanged(value ))">
+    
+                <option >MasterCard</option>
+                <option>Visa</option>
+                <option>MobilePay</option>
+                <option>Cash</option>
+                <option>Other</option>
+            </InputSelect>
+        </div>
+    </div>
+</EditForm>
 
-<h1>EDH Webcam</h1>
-<video id="videoFeed" width="320" height="240" /><canvas class="d-none" id="currentFrame" width="320" height="240" /><br />
-<button class="btn btn-primary mb-3" @onclick="CaptureFrame">Capture Frame</button> <br />
+
+
 @if (!string.IsNullOrEmpty(frameUri))
 {
     <img src="@frameUri" />
 }
 
-
-
-
-@code {
-
-    private string captionText;
-    private string frameUri;
+@code{
     
     protected override async Task OnInitializedAsync()
     {
-        await JSRuntime.InvokeVoidAsync("startVideo", "videoFeed");
-        
-   
+        _pictureEmail.PaymentType = "MasterCard";
     }
     
-    
-    private async Task CaptureFrame()
-    {
-        await JSRuntime.InvokeAsync<String>("getFrame", "videoFeed", "currentFrame", DotNetObjectReference.Create(this));
-    }
-    [JSInvokable]
-    public void ProcessImage(string imageString)
-    {
-        byte[] imageData = Convert.FromBase64String(imageString);
 
-    //Do image processing here
-    }
-    
-    
-    
+
+  
    
-    
+
+
 }

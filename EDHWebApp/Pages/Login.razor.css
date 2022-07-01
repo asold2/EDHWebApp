@@ -48,7 +48,8 @@ button:hover {
 
 
 .container-login {
-    width: 100%;
+    /*width: 100%;*/
+    width: auto;
     min-height: 100vh;
     display: -webkit-box;
     display: -webkit-flex;
@@ -64,7 +65,7 @@ button:hover {
 }
 
 .wrap-login {
-    padding: 20px;
+    padding: 50px;
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
@@ -93,12 +94,11 @@ button:hover {
     font-size: 16px;
     color: #333333;
     line-height: 1.2;
-
     display: block;
-    width: 100%;
+    width: 120%;
     height: 55px;
     background: transparent;
-    padding: 0 7px 0 43px;
+    padding: 0 50px 0 20px;
 }
 
 .focus-input {
@@ -207,9 +207,10 @@ button:hover {
 }
 
 
-.wrap-input {
-    position: relative;
-    margin-bottom: 2vh;
+.wrap-input {   
+    position: inherit;
+    margin-bottom: 3vh;
+    padding: 1em;
 }
 .wrap-SignUp{
     width: 100%;
@@ -235,4 +236,11 @@ button:hover {
     position: absolute;
     right: 0;
     top: 0;
+}
+.outlook_login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3em;
+    
 }

@@ -22,6 +22,9 @@ public class Company
 
     [JsonPropertyName("CreationDate")]
     public DateTime CreationDate { get; set; }
+    
+    
+ 
 
     public Company(string name, string email)
     {

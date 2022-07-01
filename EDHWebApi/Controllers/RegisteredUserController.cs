@@ -1,10 +1,13 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Xml;
-using EDHWebApp.Model;
-using EDHWebApp.Persistance;
+using EDHWebApi.Model;
+using EDHWebApi.EmailSender;
+using EDHWebApi.Persistance;
+using EDHWebApi.UserManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace EDHWebApi.Controllers;
 
@@ -12,46 +15,28 @@ namespace EDHWebApi.Controllers;
 [Route("[controller]")]
 public class RegisteredUserController : Controller
 {
+    private EmailSender.EmailSender _emailSender;
     private EDHContext context;
+    private UserUpdater _userUpdater;
 
     public RegisteredUserController(EDHContext context)
     {
         this.context = context;
+        _emailSender = new EmailSenderImpl();
+        _userUpdater = new UserUpdaterImpl(context);
     }
 
-    //The unregistered user now has username and password
-    [Route("/new/registration/")]
-    [HttpPost]
-    public async Task<ActionResult<User>> AddRegisteredUser([FromBody] User user)
-    {
-        Console.WriteLine(user.UserName + user.Password + "AAAAAAAA");
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        try
-        {
-            
-
-            
-            context.Users.Update(user);
-            await context.SaveChangesAsync();
-            return Created($"/{user.UserId}", user);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500, e.Message);
-        }
-
-    }
+   
 
     //User Authentication
     [Route("/account")]
     [HttpPost]
     public async Task<User> AuthenticateUser([FromBody] User user)
     {
+        Console.WriteLine(user.Password);
+        Console.WriteLine(user.UserName);
+        
+        
         if (user.UserName != "string" && user.Password != "string")
         {
             try
@@ -71,33 +56,44 @@ public class RegisteredUserController : Controller
 
     [HttpPost]
     [Route("/reg/email")]
-    public async Task SendEmailForRegistration([FromBody] RegistrationUser regUser)
+    public async Task<ActionResult> SendEmailForRegistration([FromBody] RegistrationUser regUser)
     {
-        Console.WriteLine("received req for registration in API");
-        string messageToSend = "I, " + regUser.FullName + ", would like to request an account. I work at " + regUser.Company + ".\n My email is " + regUser.Email;
         try
         {
-            MailMessage message = new MailMessage();
-            SmtpClient smtp = new SmtpClient();
-            message.From = new MailAddress("edhtech2022@gmail.com");
-            message.To.Add(new MailAddress("asoldan1459@gmail.com"));
-            message.Subject = "Request Account";
-            message.IsBodyHtml = true;
-            message.Body = messageToSend;
-            smtp.Port = 587;
-            smtp.Host = "smtp.gmail.com";
-            smtp.UseDefaultCredentials = false;
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.EnableSsl = true;
-            smtp.Credentials = new NetworkCredential("edhtech2022@gmail.com", "qlxsksjccfqtskyj");
-            
-            
-            smtp.Send(message);
-         
+            _emailSender.SendRegistrationEmail(regUser);
+            return Ok();
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            return NotFound();
+            throw;
+        }
+
+    }
+
+
+    [HttpPost]
+    [Route("/picture")]
+    public async Task<ActionResult> ReceivePictureFromUser([FromBody] PictureEmail pictureEmail)
+    {
+
+        User user = await context.Users.FirstAsync(u => u.UserId == pictureEmail.userId);
+        var companyId = context.Users.FromSqlRaw("select MyCompanyCompanyId from Users where UserId = {0}", user.UserId);
+        Company usersCompany = await context.Companies.FirstAsync(c => c.CompanyId == user.CompanyId);
+        Console.WriteLine(usersCompany.Email + "!!!!!!!!!!!!!!!");
+
+
+        try
+        {
+            _userUpdater.UpdateUserNumberOfRequests(pictureEmail.userId);
+
+            _emailSender.SendPictureFromUserToCompany(pictureEmail, user, usersCompany.Email);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
+            throw;
         }
         
     }

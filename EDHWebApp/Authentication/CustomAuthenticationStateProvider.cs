@@ -30,6 +30,7 @@ namespace Client.Authentication
             _jsRuntime = jsRuntime;
             _logInService = logInService;
             _cachedUser.Role = "";
+            _cachedUser.UserId = 0;
         }
         
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -66,6 +67,7 @@ namespace Client.Authentication
             _cachedUser = user;
             
             getLoggedInRole();
+            getLoggedInId();
             
             NotifyAuthenticationStateChanged(
                 Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
@@ -74,6 +76,8 @@ namespace Client.Authentication
         
         private ClaimsIdentity SetupClaimsForUser(User endUser)
         {
+
+            Console.WriteLine(endUser.Role + "@@@@@@@@@@@@@@@@");
             string isVerified = "";
             if (endUser.VerifiedUser)
             {
@@ -86,10 +90,15 @@ namespace Client.Authentication
             var identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }
-
+        
         void getLoggedInRole()
         {
             _logInService.setLoggedInRole(_cachedUser.Role);
+        }
+
+        void getLoggedInId()
+        {
+            _logInService.setLoggedInId(_cachedUser.UserId);
         }
         
         public async Task Logout()

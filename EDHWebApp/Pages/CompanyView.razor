@@ -2,6 +2,8 @@
 @using EDHWebApp.Model
 @using EDHWebApp.Data
 @inject NavigationManager NavigationManager;
+@inject IJSRuntime JSRuntime
+
 
 @using Microsoft.AspNetCore.Mvc
 
@@ -103,7 +105,7 @@
                     <td>@userTemp.VerifiedUser.ToString()</td>
                     <td> 
                         <button class="btn btn-success" @onclick="() => EditUser(userTemp.UserId)">Edit</button>
-                        <button class="btn btn-danger" @onclick="() => DeleteUser(userTemp)">Delete</button>
+                        <button class="btn btn-danger" @onclick="() => ShowConfirmDeleteion(userTemp)">Delete</button>
                     </td>
                 </tr>
             }
@@ -211,6 +213,22 @@
         companyUsers.Remove(user);
 
     }
+    
+    public async Task ShowConfirmDeleteion(User user)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete this user?")) 
+        {
+            return;
+        }
+        else
+        {
+            DeleteUser(user);
+        }
+    }
 
 }    
+        
+        
+        
+        
 }

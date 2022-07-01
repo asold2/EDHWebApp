@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
-using EDHWebApp.Model;
-using EDHWebApp.Persistance;
+using EDHWebApi.Model;
+using EDHWebApi.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -85,6 +85,12 @@ namespace EDHWebApi.Controllers;
             {
                 Company company = _edhContext.Companies.FirstOrDefault(c => c.CompanyId == CompanyId);
                 _edhContext.Companies.Remove(company);
+                foreach (User user in _edhContext.Users.Where(u=>u.CompanyId==company.CompanyId))
+                {
+                    _edhContext.Remove(user);
+                }
+                
+                
                  await _edhContext.SaveChangesAsync();
                  
             }
