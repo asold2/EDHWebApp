@@ -39,8 +39,6 @@ public class EmailSenderImpl : EmailSender
 
     public void SendPictureFromUserToCompany(PictureEmail pictureEmail, User user, string companyEmail)
     {
-        Console.WriteLine("In sending email");
-        
         // String messageToSend = "Hi!\n My name is " + user.Name + " " + user.Surname+ ". \n Here is a receipt from me: \n";
         string body = "Hi!\n My name is " + user.Name + " " + user.Surname+ ". \n Here is a receipt from me: \n \n \n \n \n <img src=\"cid:picture\" width=\"900\" height=\"900\" />";
         byte[] image = ConvertStringToByteArrayImage(pictureEmail.Picture);
@@ -59,11 +57,10 @@ public class EmailSenderImpl : EmailSender
             MailMessage message = new MailMessage();
             SmtpClient smtp = new SmtpClient();
             message.From = new MailAddress("edhtech2022@gmail.com");
-            message.To.Add(new MailAddress("304147@via.dk"));
+            message.To.Add(new MailAddress(companyEmail));
             message.Subject = "My Receipt:";
             message.IsBodyHtml = true;
             message.AlternateViews.Add(av);
-            // message.Body = messageToSend;
             smtp.Port = 587;
             smtp.Host = "smtp.gmail.com";
             smtp.UseDefaultCredentials = false;
@@ -88,4 +85,6 @@ public class EmailSenderImpl : EmailSender
         Console.WriteLine(imageBytes);
         return imageBytes;
     }
+
+
 }

@@ -26,48 +26,23 @@ public class RegisteredUserController : Controller
         _userUpdater = new UserUpdaterImpl(context);
     }
 
-    //The unregistered user now has username and password
-    [Route("/new/registration/")]
-    [HttpPost]
-    public async Task<ActionResult<User>> AddRegisteredUser([FromBody] User user)
-    {
-        Console.WriteLine(user.UserName + user.Password + "AAAAAAAA");
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        try
-        {
-            
-
-            
-            context.Users.Update(user);
-            await context.SaveChangesAsync();
-            return Created($"/{user.UserId}", user);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500, e.Message);
-        }
-
-    }
+   
 
     //User Authentication
     [Route("/account")]
     [HttpPost]
     public async Task<User> AuthenticateUser([FromBody] User user)
     {
+        Console.WriteLine(user.Password);
+        Console.WriteLine(user.UserName);
+        
+        
         if (user.UserName != "string" && user.Password != "string")
         {
             try
             {
                 User userToReturn =
                     await context.Users.FirstAsync(u => u.UserName == user.UserName && u.Password == user.Password);
-                Console.WriteLine(userToReturn.MyCompany + "!!!!!!!");
-                Console.WriteLine(userToReturn.Name + "@@@@@@@@@@@");
-                
                 return userToReturn;
             }
             catch (Exception e)
@@ -103,18 +78,16 @@ public class RegisteredUserController : Controller
     {
 
         User user = await context.Users.FirstAsync(u => u.UserId == pictureEmail.userId);
-        Console.WriteLine(user.MyCompany+ "!!!!!!!!!!!!!!!!!!!!");
-        Console.WriteLine(user.Email+ "!!!!!!!!!!!!!!!!!!!!");
-        Console.WriteLine(user.Role+ "!!!!!!!!!!!!!!!!!!!!");
-        Console.WriteLine(user.Surname+ "!!!!!!!!!!!!!!!!!!!!");
-        // Company company = await context.Companies.FirstAsync(c=>c.CompanyId==user.);       
+        var companyId = context.Users.FromSqlRaw("select MyCompanyCompanyId from Users where UserId = {0}", user.UserId);
+        Company usersCompany = await context.Companies.FirstAsync(c => c.CompanyId == user.CompanyId);
+        Console.WriteLine(usersCompany.Email + "!!!!!!!!!!!!!!!");
 
 
         try
         {
             _userUpdater.UpdateUserNumberOfRequests(pictureEmail.userId);
 
-            // _emailSender.SendPictureFromUserToCompany(pictureEmail, user);
+            _emailSender.SendPictureFromUserToCompany(pictureEmail, user, usersCompany.Email);
             return Ok();
         }
         catch (Exception e)

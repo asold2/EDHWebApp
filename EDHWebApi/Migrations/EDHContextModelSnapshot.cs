@@ -45,14 +45,14 @@ namespace EDHWebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsAdmin")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MyCompanyCompanyId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -83,7 +83,7 @@ namespace EDHWebApp.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("MyCompanyCompanyId");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -92,7 +92,7 @@ namespace EDHWebApp.Migrations
                 {
                     b.HasOne("EDHWebApi.Model.Company", "MyCompany")
                         .WithMany()
-                        .HasForeignKey("MyCompanyCompanyId")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
