@@ -19,9 +19,9 @@ public class UserUpdaterImpl : UserUpdater
     {
         try
         {
-            User requestingUser = await _edhContext.Users.FirstAsync(u => u.UserId == userId);
-            requestingUser.NumberOfRequests++;
-            _edhContext.Update(requestingUser);
+            CompanyUser requestingCompanyUser = await _edhContext.CompanyUsers.FirstAsync(u => u.UserId == userId);
+            requestingCompanyUser.NumberOfRequests++;
+            _edhContext.Update(requestingCompanyUser);
             await _edhContext.SaveChangesAsync();
 
         }
@@ -31,9 +31,9 @@ public class UserUpdaterImpl : UserUpdater
         }
     }
 
-    public async Task RegisterUser(User user)
+    public async Task RegisterUser(CompanyUser companyUser)
     {
-        _edhContext.Update(user);
+        _edhContext.Update(companyUser);
         await _edhContext.SaveChangesAsync();
     }
 }

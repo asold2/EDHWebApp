@@ -14,25 +14,25 @@
 
 
 
-    <EditForm Model="@user" OnValidSubmit="@AddUser" 
+    <EditForm Model="@_companyUser" OnValidSubmit="@AddUser" 
            
     >
         <DataAnnotationsValidator/>
         <ValidationSummary/>
         
         <div class="form-group">Name:
-            <InputText @bind-Value="@user.Name" style="margin-left: 3em"/>
+            <InputText @bind-Value="@_companyUser.Name" style="margin-left: 3em"/>
         </div>
         <div class="form-group">Surname:
-            <InputText @bind-Value="@user.Surname" style="margin-left: 2em"/>
+            <InputText @bind-Value="@_companyUser.Surname" style="margin-left: 2em"/>
         </div>
         <div class="form-group">Email:
-            <InputText  @bind-Value="@user.Email" style="margin-left: 3em"/>
+            <InputText  @bind-Value="@_companyUser.Email" style="margin-left: 3em"/>
         </div>
     
         <div class="form-group">Company:
             <InputSelect style="margin-left: 3em" ValueExpression="@(()=>companyname)"
-                         Value="@company.Name"
+                         Value="@_customerCompany.Name"
                          ValueChanged="@((string value) => OnValueChanged(value ))">
                 @foreach (var comp in companies)
                 {
@@ -41,8 +41,8 @@
             </InputSelect>
         </div>  
         <div class="form-group">Admin:
-            <InputSelect ValueExpression="@(()=>user.IsAdmin)"
-                         Value="@user.IsAdmin"
+            <InputSelect ValueExpression="@(()=>_companyUser.IsAdmin)"
+                         Value="@_companyUser.IsAdmin"
                          ValueChanged="@((bool value) => OnChangeAdminStatus(value))">
                         
                 <option value="true"> Yes </option>
@@ -51,8 +51,8 @@
             </InputSelect>
         </div>  
         <div class="form-group">Verified:
-            <InputSelect ValueExpression="@(()=>user.VerifiedUser)"
-                         Value="@user.VerifiedUser"
+            <InputSelect ValueExpression="@(()=>_companyUser.VerifiedUser)"
+                         Value="@_companyUser.VerifiedUser"
                          ValueChanged="@((bool value) => OnChangeVerifiedStatus(value))">
                             
                 <option value="true"> Yes </option>
@@ -61,7 +61,7 @@
             </InputSelect>
         </div>
         <p class="action">
-            <button class="btn btn-success" type="submit">Add User</button>
+            <button class="btn btn-success" onclick="window.location.reload()" type="submit">Add User</button>
         </p>
     </EditForm>
     
@@ -90,6 +90,7 @@
                 <th>Company Name</th>
                 <th>Is Admin</th>
                 <th>Is Verified</th>
+                <th>Number of requests</th>
             </tr>
             </thead>
             <tbody>
@@ -103,6 +104,7 @@
                     <td>@companyname</td>
                     <td>@userTemp.IsAdmin.ToString()</td>
                     <td>@userTemp.VerifiedUser.ToString()</td>
+                    <td>@userTemp.NumberOfRequests</td>
                     <td> 
                         <button class="btn btn-success" @onclick="() => EditUser(userTemp.UserId)">Edit</button>
                         <button class="btn btn-danger" @onclick="() => ShowConfirmDeleteion(userTemp)">Delete</button>
@@ -123,10 +125,10 @@
     public string companyId { get; set; }
 
 
-    private User user = new User();
-    private IList<User> companyUsers = new List<User>();
-    private IList<Company> companies = new List<Company>();
-    Company company = new Company();
+    private CompanyUser _companyUser = new CompanyUser();
+    private IList<CompanyUser> companyUsers = new List<CompanyUser>();
+    private IList<CustomerCompany> companies = new List<CustomerCompany>();
+    CustomerCompany _customerCompany = new CustomerCompany();
     int companyid = 0;
     string companyname = "";
     private string isVerified { get; set; }
@@ -138,15 +140,15 @@
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        Console.WriteLine("Company Id" + companyId);
         companies = await CompaniesData.GetAllCompanies();
         companyid = Int32.Parse(companyId);
-        company = companies.FirstOrDefault(c => c.CompanyId == companyid);
-        companyname = company.Name;
-        user.MyCompany = company;
+        _customerCompany = companies.FirstOrDefault(c => c.CompanyId == companyid);
+        companyname = _customerCompany.Name;
+        _companyUser.MyCustomerCompany = _customerCompany;
+        
         companyUsers = await UsersData.GetAllUsersByCompanyId(companyid);
         
-        if (!user.IsAdmin)
+        if (!_companyUser.IsAdmin)
         {
             isAdmin = "No";
         }
@@ -154,7 +156,7 @@
         {
             isAdmin = "Yes";
         }
-        if (!user.VerifiedUser)
+        if (!_companyUser.VerifiedUser)
         {
             isVerified = "No";
         }
@@ -169,37 +171,38 @@
     
     private async void AddUser()
     {
-        user.Password = "";
-        user.UserName = "";
-        user.Role = "User";
-        if(!companyUsers.Contains(user))
+       
+        _companyUser.Role = "User";
+        _companyUser.RememberMe = false;
+        if(!companyUsers.Contains(_companyUser))
         {
-            companyUsers.Add(user);
+            companyUsers.Add(_companyUser);
+            await UsersData.AddUser(_companyUser);
         }
-        await UsersData.AddUser(user);
-        
     }
 
-    private void OnChange(Company company)
+
+
+    private void OnChange(CustomerCompany customerCompany)
     {
-        user.MyCompany = company;
+        _companyUser.MyCustomerCompany = customerCompany;
     }
 
 
     private void OnValueChanged(string value)
     {
-        company = companies.FirstOrDefault(c => c.Name.Equals(value));
-        user.MyCompany = company;
+        _customerCompany = companies.FirstOrDefault(c => c.Name.Equals(value));
+        _companyUser.MyCustomerCompany = _customerCompany;
     }
 
     private void OnChangeAdminStatus(bool value)
     {
-        user.IsAdmin = value;
+        _companyUser.IsAdmin = value;
     }
 
     private void OnChangeVerifiedStatus(bool value)
     {
-        user.VerifiedUser = value;
+        _companyUser.VerifiedUser = value;
     }
 
     private void EditUser(int userId)
@@ -207,14 +210,14 @@
         NavigationManager.NavigateTo($"/ViewUser/{companyid}/{companyname}/{userId}");
     }
     
-    private  void DeleteUser(User user)
+    private  void DeleteUser(CompanyUser companyUser)
     {
-        UsersData.RemoveUser(user.UserId);
-        companyUsers.Remove(user);
+        UsersData.RemoveUser(companyUser.UserId);
+        companyUsers.Remove(companyUser);
 
     }
     
-    public async Task ShowConfirmDeleteion(User user)
+    public async Task ShowConfirmDeleteion(CompanyUser companyUser)
     {
         if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete this user?")) 
         {
@@ -222,7 +225,7 @@
         }
         else
         {
-            DeleteUser(user);
+            DeleteUser(companyUser);
         }
     }
 

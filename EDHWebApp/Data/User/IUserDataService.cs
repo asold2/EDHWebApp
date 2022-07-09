@@ -18,9 +18,10 @@ public class IUserDataService : IUsersData
     
     
     
-    public async  Task AddUser(User user)
+    public async  Task AddUser(CompanyUser companyUser)
     {
-        string userAsJson = JsonSerializer.Serialize(user);
+        companyUser.CompanyId = companyUser.MyCustomerCompany.CompanyId;
+        string userAsJson = JsonSerializer.Serialize(companyUser);
         HttpContent content = new StringContent(
             userAsJson,
             Encoding.UTF8,
@@ -28,20 +29,19 @@ public class IUserDataService : IUsersData
         );
 
         await HttpClient.PostAsync(uri + "/user/", content);
-        Console.WriteLine(userAsJson);
     }
 
-    public async Task<IList<User>> GetAllUnregisteredUsers()
+    public async Task<IList<CompanyUser>> GetAllUnregisteredUsers()
     {
         string receivedMessage = await HttpClient.GetStringAsync(uri + "unreg/users/");
-        IList<User> UnregUsers = JsonSerializer.Deserialize<IList<User>>(receivedMessage);
+        IList<CompanyUser> UnregUsers = JsonSerializer.Deserialize<IList<CompanyUser>>(receivedMessage);
         return UnregUsers;
     }
 
-    public async Task RegisterUser(User user)
+    public async Task RegisterUser(Account account)
     {
         
-        string userAsJson = JsonSerializer.Serialize(user, new JsonSerializerOptions
+        string userAsJson = JsonSerializer.Serialize(account, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
@@ -53,30 +53,25 @@ public class IUserDataService : IUsersData
 
         
         await HttpClient.PutAsync(uri + "/registration/", content);
-        Console.WriteLine("registering user");
     }
 
-    public async Task<IList<User>> GetAllUsersByCompanyId(int companyId)
+    public async Task<IList<CompanyUser>> GetAllUsersByCompanyId(int companyId)
     {
         string receivedMessage = await HttpClient.GetStringAsync(uri + $"/users/{companyId}");
-        IList<User> companyUsers = JsonSerializer.Deserialize<IList<User>>(receivedMessage);
+        IList<CompanyUser> companyUsers = JsonSerializer.Deserialize<IList<CompanyUser>>(receivedMessage);
         return companyUsers;
     }
 
     public async Task RemoveUser(int userId)
     {
         await HttpClient.DeleteAsync(uri + $"/user/removal/{userId}");
-        Console.WriteLine("Removing user");
     }
 
-    public async Task<User> GetUserById(string userId)
+    public async Task<CompanyUser> GetUserById(string userId)
     {
         string receivedMessage = await HttpClient.GetStringAsync(uri + $"/user/{userId}");
-        User searchedUser = JsonSerializer.Deserialize<User>(receivedMessage);
-
-        return searchedUser;
-
-
-
+        CompanyUser searchedCompanyUser =  JsonSerializer.Deserialize<CompanyUser>(receivedMessage);
+        
+        return searchedCompanyUser;
     }
 }

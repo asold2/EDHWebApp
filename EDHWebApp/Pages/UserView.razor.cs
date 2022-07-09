@@ -1,4 +1,5 @@
-﻿using Client.Data.Validation;
+﻿using System.Reflection.Metadata;
+using Client.Data.Validation;
 using EDHWebApp.Data;
 using EDHWebApp.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -23,11 +24,15 @@ using System.Net.Http;
 using System.IO;
 
 [Authorize(Policy = "IsVerified")]
+[Authorize]
 public class UserViewRazor : ComponentBase
 {
     protected string image = "";
     protected string captionText = "";
     protected string frameUri = "";
+    
+
+    protected string success = "";
     // protected byte[] imageData = new byte [10000];
     
     protected PictureEmail _pictureEmail = new PictureEmail();
@@ -53,6 +58,8 @@ public class UserViewRazor : ComponentBase
         int id = _userLogInService.getLoggedInId();
         _pictureEmail.userId = id;
         await _emailSender.sendPictureToCompaniesEmail(_pictureEmail);
+        success = "Picture sent successfully!";
+
     }
 
      public async Task GetPicture(InputFileChangeEventArgs e)
@@ -69,6 +76,9 @@ public class UserViewRazor : ComponentBase
          File.Delete(path);
          string image = Convert.ToBase64String(bytes);
          _pictureEmail.Picture = image;
+         
+
+
 
 
 

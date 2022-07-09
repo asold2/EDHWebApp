@@ -1,0 +1,23 @@
+.main_container[b-mj9xyh101r]{
+    /*display:flex;*/
+    margin:auto;
+    width: 140%;
+    
+    /*padding: 0px 0;*/
+}
+
+.button[b-mj9xyh101r] {
+    margin-top: 2em;
+    transition-duration: 0.4s;
+    width: 50%;
+}
+
+.button:hover[b-mj9xyh101r] {
+    background-color: #8107F1;
+    color: white;
+}
+
+.text[b-mj9xyh101r]{
+    margin-bottom: 2em;
+    width: 100%;
+}

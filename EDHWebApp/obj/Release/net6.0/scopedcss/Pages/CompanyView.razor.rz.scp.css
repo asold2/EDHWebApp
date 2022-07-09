@@ -1,0 +1,22 @@
+
+table[b-ifs1vc8jjw], th[b-ifs1vc8jjw], td[b-ifs1vc8jjw] {
+    border: 0.5px solid;
+}
+table[b-ifs1vc8jjw]{
+    width: 100%;
+    text-align: center;
+    padding: 1em;
+}
+tr:hover[b-ifs1vc8jjw] {background-color: #e6dbb9;}
+tr:nth-child(even):hover[b-ifs1vc8jjw] {background-color: #e6dbb9;}
+tr:nth-child(even)[b-ifs1vc8jjw] {background-color: #f2f2f2;}
+
+.form-group[b-ifs1vc8jjw]{
+    padding: 0.3em;
+
+}
+.edit_form[b-ifs1vc8jjw]{
+   align-items: center;
+    /*justify-content: center;*/
+}
+

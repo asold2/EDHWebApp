@@ -13,7 +13,10 @@
 @using System.Net.Http
 @using System.IO
 @using System.Runtime.CompilerServices
+@using EDHWebApi.Model
 @using EDHWebApp.Data
+@using IdentityModel
+
 <EditForm Model="_pictureEmail">
     <div class="main_container">
         <div class="col-md-12">
@@ -24,9 +27,6 @@
 
         <div>
             <InputFile runant="server" id="selectedPicture" type="file" name="image" accept="image/*" capture="environment" OnChange="GetPicture"></InputFile>
-        </div>
-        <div>
-            <button class="button" @onclick="CaptureFrame">Send Picture</button> <br />
         </div>
     
         <div class="form-group">Payment Type:
@@ -40,6 +40,17 @@
                 <option>Other</option>
             </InputSelect>
         </div>
+        
+        <div>
+            <button class="button" @onclick="CaptureFrame">Send Picture</button> <br />
+        </div>
+        
+        <div style="color: #141619" >
+            <p>
+               @success
+            </p>
+        </div>
+        
     </div>
 </EditForm>
 

@@ -8,15 +8,15 @@
 
 <h3>Companies</h3>
 
-<EditForm Model="@companyToRegister" OnValidSubmit="@RegisterCompany">
+<EditForm Model="@_customerCompanyToRegister" OnValidSubmit="@RegisterCompany">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
     
     <div class="form-group">Company Name:
-        <InputText @bind-Value="@companyToRegister.Name"/>
+        <InputText @bind-Value="@_customerCompanyToRegister.Name"/>
     </div>
     <div class="form-group">Company Email:
-        <InputText @bind-Value="@companyToRegister.Email"/>
+        <InputText @bind-Value="@_customerCompanyToRegister.Email"/>
     </div>
    
     <p class="action">
@@ -73,9 +73,9 @@ else
 @code {
 
 
-    private IList<Company> allCompanies;
+    private IList<CustomerCompany> allCompanies;
     
-    private Company companyToRegister = new Company();
+    private CustomerCompany _customerCompanyToRegister = new CustomerCompany();
 
 
     protected override async Task OnInitializedAsync()
@@ -86,16 +86,19 @@ else
 
     private async void RegisterCompany()
     {
-        if (!allCompanies.Contains(companyToRegister))
+        if (!allCompanies.Contains(_customerCompanyToRegister))
         {
-            allCompanies.Add(companyToRegister);
-            await CompaniesData.RegisterCompany(companyToRegister);
+            allCompanies.Add(_customerCompanyToRegister);
+            NavigationManager.NavigateTo("/ViewCompanies", true);
+
+            await CompaniesData.RegisterCompany(_customerCompanyToRegister);
+
         }
-        
+
 
     }
 
-    public async Task ShowConfirmDeleteion(Company company)
+    public async Task ShowConfirmDeleteion(CustomerCompany customerCompany)
     {
         if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the company?"))
         {
@@ -103,7 +106,7 @@ else
         }
         else
         {
-            DeleteCompany(company);
+            DeleteCompany(customerCompany);
         }
     }
 
@@ -112,10 +115,10 @@ else
         NavigationManager.NavigateTo($"/Company/{companyId}");
     }
     
-    private void DeleteCompany(Company company)
+    private void DeleteCompany(CustomerCompany customerCompany)
     {
-         CompaniesData.DeleteCompany(company.CompanyId);
-        allCompanies.Remove(company);
+         CompaniesData.DeleteCompany(customerCompany.CompanyId);
+        allCompanies.Remove(customerCompany);
 
     }
 

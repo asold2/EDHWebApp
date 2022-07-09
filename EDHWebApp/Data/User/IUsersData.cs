@@ -4,11 +4,11 @@ namespace EDHWebApp.Data;
 
 public interface IUsersData
 {
-    Task AddUser(User user);
-    Task<IList<User>> GetAllUnregisteredUsers();
-    Task RegisterUser(User user);
-    Task<IList<User>> GetAllUsersByCompanyId(int companyId);
+    Task AddUser(CompanyUser companyUser);
+    Task<IList<CompanyUser>> GetAllUnregisteredUsers();
+    Task RegisterUser(Account account);
+    Task<IList<CompanyUser>> GetAllUsersByCompanyId(int companyId);
 
     Task RemoveUser(int userId);
-    Task<User> GetUserById(string userId);
+    Task<CompanyUser> GetUserById(string userId);
 }

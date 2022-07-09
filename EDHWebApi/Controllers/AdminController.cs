@@ -1,4 +1,5 @@
-﻿using EDHWebApi.Model;
+﻿using System.Security.Cryptography;
+using EDHWebApi.Model;
 using EDHWebApi.Persistance;
 using EDHWebApi.UserManager;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +24,9 @@ public class AdminController : Controller
     
     [Route("/user/")]
     [HttpPost]
-    public async Task<ActionResult<User>> AddUserAsync([FromBody] User user)
+    public async Task<ActionResult<CompanyUser>> AddUserAsync([FromBody] CompanyUser companyUser)
     {
-
+       
         
         if (!ModelState.IsValid)
         {
@@ -34,8 +35,8 @@ public class AdminController : Controller
 
         try
         {
-            User existentUser = context.Users.FirstOrDefault(u => u.Email.Equals(user.Email));
-            if (existentUser != null)
+            CompanyUser existentCompanyUser = await context.CompanyUsers.FirstOrDefaultAsync(u => u.Email.Equals(companyUser.Email));
+            if (existentCompanyUser != null)
             {
                 return StatusCode(403);
             }
@@ -48,12 +49,12 @@ public class AdminController : Controller
         
         try
         {
-            Company company = await context.Companies.FirstAsync(c => c.CompanyId == user.MyCompany.CompanyId);
-            user.MyCompany = company;
-            user.CompanyId = company.CompanyId;
-            await context.Users.AddAsync(user);
+            CustomerCompany company = await context.CustomerCompanies.FirstAsync(c => c.CompanyId == companyUser.MyCompany.CompanyId);
+            companyUser.MyCompany = company;
+            companyUser.CompanyId = company.CompanyId;
+            await context.CompanyUsers.AddAsync(companyUser);
             await context.SaveChangesAsync();
-            return Created($"/{user.UserId}", user);
+            return Created($"/{companyUser.UserId}", companyUser);
         }
         catch (Exception e)
         {
@@ -67,10 +68,10 @@ public class AdminController : Controller
     [HttpDelete]
     public async Task RemoveUserFromCompany([FromRoute] int userId)
     {
-        User userToDelete = context.Users.FirstOrDefault(u => u.UserId == userId);
+        CompanyUser companyUserToDelete = context.CompanyUsers.FirstOrDefault(u => u.UserId == userId);
         try
         {
-            context.Users.Remove(userToDelete);
+            context.CompanyUsers.Remove(companyUserToDelete);
             await context.SaveChangesAsync();
         }
         catch (Exception e)
@@ -83,9 +84,29 @@ public class AdminController : Controller
     
     [Route("/registration/")]
     [HttpPut]
-    public async Task<ActionResult<User>> RegisterUser([FromBody] User user)
+    public async Task<ActionResult<CompanyUser>> RegisterUser([FromBody] Account account)
     {
+        Console.WriteLine("Registering user");
+        CompanyUser existentCompanyUserName = context.CompanyUsers.FirstOrDefault(u => u.Username.Equals(account.Username));
 
+        if (existentCompanyUserName != null)
+        {
+            return StatusCode(403);
+        }
+        
+        CompanyUser companyUser = await context.CompanyUsers.FirstAsync(u => u.UserId == account.userId);
+
+        CreatePasswordHash(account.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+        companyUser.Username = account.Username;
+        companyUser.PasswordHash = passwordHash;
+        companyUser.PasswordSalt = passwordSalt;
+        companyUser.VerifiedUser = true;
+
+        Console.WriteLine("Added a new user all right");
+        
+        
+        
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -93,10 +114,9 @@ public class AdminController : Controller
 
         try
         {
-            _userUpdater.RegisterUser(user);
-            // context.Update(user);
-            // await context.SaveChangesAsync();
-            return   Accepted($"/{user.UserId}", user);
+            _userUpdater.RegisterUser(companyUser);
+          
+            return   Accepted($"/{companyUser.UserId}", companyUser);
         }
         catch (Exception e)
         {
@@ -110,9 +130,8 @@ public class AdminController : Controller
     //The unregistered user now has username and password
     [Route("/new/registration/")]
     [HttpPost]
-    public async Task<ActionResult<User>> AddRegisteredUser([FromBody] User user)
+    public async Task<ActionResult<CompanyUser>> AddRegisteredUser([FromBody] CompanyUser companyUser)
     {
-        Console.WriteLine(user.UserName + user.Password + "AAAAAAAA");
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -123,9 +142,9 @@ public class AdminController : Controller
             
 
             
-            context.Users.Update(user);
+            context.CompanyUsers.Update(companyUser);
             await context.SaveChangesAsync();
-            return Created($"/{user.UserId}", user);
+            return Created($"/{companyUser.UserId}", companyUser);
         }
         catch (Exception e)
         {
@@ -133,6 +152,15 @@ public class AdminController : Controller
             return StatusCode(500, e.Message);
         }
 
+    }
+    
+    private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+    {
+        using (var hmac = new HMACSHA512())
+        {
+            passwordSalt = hmac.Key;
+            passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        }
     }
     
     

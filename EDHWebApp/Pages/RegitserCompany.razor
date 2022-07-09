@@ -6,15 +6,15 @@
 <h3>RegitserCompany</h3>
 
 
-<EditForm Model="@companyToRegister" OnValidSubmit="@RegisterCompany">
+<EditForm Model="@_customerCompanyToRegister" OnValidSubmit="@RegisterCompany">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
     
     <div class="form-group">Company Name :
-        <InputText @bind-Value="@companyToRegister.Name"/>
+        <InputText @bind-Value="@_customerCompanyToRegister.Name"/>
     </div>
     <div class="form-group">Company Email:
-        <InputText @bind-Value="@companyToRegister.Email"/>
+        <InputText @bind-Value="@_customerCompanyToRegister.Email"/>
     </div>
    
     <p class="action">
@@ -26,11 +26,11 @@
 
 
 @code {
-    private Company companyToRegister = new Company();
+    private CustomerCompany _customerCompanyToRegister = new CustomerCompany();
 
     private void RegisterCompany()
     {
-        CompaniesData.RegisterCompany(companyToRegister);
+        CompaniesData.RegisterCompany(_customerCompanyToRegister);
     }
 
 }
