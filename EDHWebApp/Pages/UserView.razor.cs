@@ -4,7 +4,6 @@ using EDHWebApp.Data;
 using EDHWebApp.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace EDHWebApp.Pages;
 

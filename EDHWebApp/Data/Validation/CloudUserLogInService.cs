@@ -10,7 +10,6 @@ using EDHWebApp.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Ocsp;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
