@@ -6,23 +6,23 @@
 @inject NavigationManager NavigationManager
 <h3>ViewUser</h3>
 
-<EditForm Model="@user" OnValidSubmit="@RegisterUser">
+<EditForm Model="@account" OnValidSubmit="@RegisterUser">
      <div class="container mt-3">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
     
-    <div>Name: @user.Name</div>
-    <div>Surname: @user.Surname</div>
-    <div>Email: @user.Email</div>
+    <div>Name: @_companyUser.Name</div>
+    <div>Surname: @_companyUser.Surname</div>
+    <div>Email: @_companyUser.Email</div>
     <div>Company Name: @companyname</div>
     <div>Admin Status: @isAdmin</div>
     <div>Verified Status: @isVerified</div>
 
     <div class="form-group">Set Username:
-        <InputText  @bind-Value="@user.UserName" style="margin-left: 3em"/>
+        <InputText  @bind-Value="@account.Username" style="margin-left: 3em"/>
     </div>
     <div class="form-group">Set Password:
-        <InputText  @bind-Value="@user.Password" style="margin-left: 2em"/>
+        <InputText  @bind-Value="@account.Password" style="margin-left: 2em"/>
     </div>
     
      <p class="action">
@@ -42,13 +42,13 @@
     public string companyname { get; set; }
     [Parameter]
     public string companyid { get; set; }
-  
 
-    
-    private User user = new User();
-    private Company usersCompnay = new Company(); 
-    private string isVerified { get; set; }
-    private string isAdmin { get; set; }
+
+    private Account account = new Account();
+    private CompanyUser _companyUser = new CompanyUser();
+    // private Company usersCompnay = new Company(); 
+    private string isVerified = " ";
+    private string isAdmin = " ";
     string usernameError = "Introduce user name!";
     string passwordError = "Introduce password!";
     protected string CreationError = "";
@@ -57,13 +57,21 @@
 
     protected override async Task OnInitializedAsync()
     {
+        // Console.WriteLine(userId);
+        // Console.WriteLine();
+        
+        
         companyId = Int32.Parse(companyid);
-
-        user = await UsersData.GetUserById(userId);
-        IList<Company> companies = await CompaniesData.GetAllCompanies();
-        usersCompnay = companies.FirstOrDefault(c => c.CompanyId == companyId);
-        Console.WriteLine(usersCompnay.Name + " " + usersCompnay.CompanyId);
-        if (!user.IsAdmin)
+        account.userId = Int32.Parse(userId); 
+        _companyUser = await UsersData.GetUserById(userId);
+        Console.WriteLine(_companyUser.Email + "#$#$#$#$");
+        Console.WriteLine(_companyUser.Role + "#$#$#$#$");
+        Console.WriteLine(_companyUser.IsAdmin + "#$#$#$#$");
+        Console.WriteLine(_companyUser.VerifiedUser + "#$#$#$#$");
+        Console.WriteLine(_companyUser.TokenExpires + "#$#$#$#$");
+        // IList<Company> companies = await CompaniesData.GetAllCompanies();
+        // usersCompnay = companies.FirstOrDefault(c => c.CompanyId == companyId);
+        if (!_companyUser.IsAdmin)
         {
             isAdmin = "No";
         }
@@ -71,7 +79,7 @@
         {
             isAdmin = "Yes";
         }
-        if (!user.VerifiedUser)
+        if (!_companyUser.VerifiedUser)
         {
             isVerified = "No";
         }
@@ -79,18 +87,16 @@
         {
             isVerified = "Yes";
         }
-        user.MyCompany = usersCompnay;
+        // user.MyCompany = usersCompnay;
 
     }
 
     private async void RegisterUser()
     {
-        if (user.Password != "" && user.UserName != "")
+        if (account.Password != "" && account.Username != "")
         {
-            Console.WriteLine(user.UserName);
-            Console.WriteLine(user.Password);
-            user.VerifiedUser = true;
-            await UsersData.RegisterUser(user);
+            _companyUser.VerifiedUser = true;
+            await UsersData.RegisterUser(account);
             NavigationManager.NavigateTo($"/Company/{companyid}");
         }
         else

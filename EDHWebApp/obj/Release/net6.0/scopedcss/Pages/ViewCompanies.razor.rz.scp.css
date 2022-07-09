@@ -1,0 +1,14 @@
+
+table[b-xdrd5z0d5s], th[b-xdrd5z0d5s], td[b-xdrd5z0d5s] {
+    border: 0.5px solid;
+}
+table[b-xdrd5z0d5s]{
+    width: 100%;
+    /*text-align: center;*/
+}
+tr:hover[b-xdrd5z0d5s] {background-color: #e6dbb9;}
+tr:nth-child(even):hover[b-xdrd5z0d5s] {background-color: #e6dbb9;}
+tr:nth-child(even)[b-xdrd5z0d5s] {background-color: #f2f2f2;}
+
+.form-group[b-xdrd5z0d5s]{
+}

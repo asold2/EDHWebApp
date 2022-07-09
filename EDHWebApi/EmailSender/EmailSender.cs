@@ -5,7 +5,7 @@ namespace EDHWebApi.EmailSender;
 public interface EmailSender
 {
     void SendRegistrationEmail(RegistrationUser regUser);
-    void SendPictureFromUserToCompany(PictureEmail pictureEmail, User user, string companyEmail);
+    int SendPictureFromUserToCompany(PictureEmail pictureEmail, CompanyUser companyUser, string companyEmail);
     
     
 }

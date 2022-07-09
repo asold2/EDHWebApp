@@ -1,0 +1,88 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = EDHWebApp
+build_property.RootNamespace = EDHWebApp
+build_property.ProjectDir = C:\Users\asold\RiderProjects\EDHWebApp\EDHWebApp\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\asold\RiderProjects\EDHWebApp\EDHWebApp
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/RegitserCompany.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXRzZXJDb21wYW55LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/ViewUser.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlld1VzZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/About.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEFib3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/CompanyView.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFueVZpZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ifs1vc8jjw
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-2yfb4xlbbl
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/UserView.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclZpZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-mj9xyh101r
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/ViewCompanies.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlld0NvbXBhbmllcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-xdrd5z0d5s
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEVtcHR5TGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-7aio8x9gty
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/LoginCreateAccountLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luQ3JlYXRlQWNjb3VudExheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-2zq06qfv6b
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-zviu7at80f
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/MainLayoutSU.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXRTVS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-zeytyuuayc
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-7plbe4p5dk
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApp/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

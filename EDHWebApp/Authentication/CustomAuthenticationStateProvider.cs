@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Json;
-using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Client.Data.Validation;
 using EDHWebApp.Model;
+using Hanssens.Net;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 
-namespace Client.Authentication
+namespace EDHWebApp.Authentication
 {
     /// <summary>
     /// A class used for authenticating logged in user.
@@ -17,99 +18,129 @@ namespace Client.Authentication
     {
         private readonly IJSRuntime _jsRuntime;
         private readonly IUserLogInService _logInService;
+        private readonly ILocalStorageService _localStorageService;
+        
+            
 
         
         
         
-        private User _cachedUser = new User();
+        private CompanyUser _cachedCompanyUser = new CompanyUser();
         
         
         
-        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime, IUserLogInService logInService)
+        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime, IUserLogInService logInService, ILocalStorageService localStorage)
         {
             _jsRuntime = jsRuntime;
             _logInService = logInService;
-            _cachedUser.Role = "";
-            _cachedUser.UserId = 0;
+            _cachedCompanyUser.Role = "";
+            _cachedCompanyUser.UserId = 0;
+            _localStorageService = localStorage;
         }
         
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var identity = new ClaimsIdentity();
-            if (_cachedUser == null)
+            if (_cachedCompanyUser == null)
             {
                 var userAsJson = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "currentUser");
                 if (!string.IsNullOrEmpty(userAsJson))
                 {
-                    _cachedUser = JsonSerializer.Deserialize<User>(userAsJson);
-                    identity = SetupClaimsForUser(_cachedUser);
+                    _cachedCompanyUser = JsonSerializer.Deserialize<CompanyUser>(userAsJson);
+                    identity = SetupClaimsForUser(_cachedCompanyUser);
                 }
             }
             else
             {
-                identity = SetupClaimsForUser(_cachedUser);
+                identity = SetupClaimsForUser(_cachedCompanyUser);
+
             }
 
             var cachedClaimsPrincipal = new ClaimsPrincipal(identity);
+        
             return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
         }
 
-        public async Task ValidateLogin(string username, string password)
+        public async Task ValidateLogin(string username, string password, bool rememberMe)
         {
             if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
             if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
-            
-            var user = await _logInService.ValidateUserAsync(username, password);
+
+
+            Console.WriteLine("Validating");
+            var user = await _logInService.ValidateUserAsync(username, password, rememberMe);
+
+
+
+
             var identity = SetupClaimsForUser(user);
+            // var identity = await _logInService.getClaimsForUserAsync(user);
+
+           
+            
             
             var serialisedData = JsonSerializer.Serialize(user);
             await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
-            _cachedUser = user;
+            _cachedCompanyUser = user;
             
-            getLoggedInRole();
-            getLoggedInId();
+            // new AuthenticationService().SignInAsync()
+            setLoggedInId(_cachedCompanyUser.UserId);
+            setLoggedInRole(_cachedCompanyUser.Role);
+
+            await _localStorageService.SetItemAsync("refreshToken", user.RefreshToken);
             
             NotifyAuthenticationStateChanged(
                 Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
+           
         }
         
         
-        private ClaimsIdentity SetupClaimsForUser(User endUser)
+        
+        private ClaimsIdentity SetupClaimsForUser(CompanyUser endCompanyUser)
         {
-
-            Console.WriteLine(endUser.Role + "@@@@@@@@@@@@@@@@");
+        
             string isVerified = "";
-            if (endUser.VerifiedUser)
+            if (endCompanyUser.VerifiedUser)
             {
                 isVerified = "isVerified";
             }
-
-            var claims = new List<Claim> {new("Role",  endUser.Role), new ("isVerified", isVerified)};
-
-            //Add a claim to check for the type of the subclass(EndUser)
-            var identity = new ClaimsIdentity(claims, "apiauth_type");
+        
+            var claims = new List<Claim> {new("Role",  endCompanyUser.Role), new ("isVerified", isVerified), new (ClaimTypes.Name, endCompanyUser.Username)};
+        
+    
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+         
             return identity;
+
         }
         
-        void getLoggedInRole()
+        void setLoggedInRole(string role)
         {
-            _logInService.setLoggedInRole(_cachedUser.Role);
+            _logInService.setLoggedInRole(role);
         }
 
-        void getLoggedInId()
+        void setLoggedInId(int id)
         {
-            _logInService.setLoggedInId(_cachedUser.UserId);
+            _logInService.setLoggedInId(id);
         }
         
         public async Task Logout()
         {
-            _cachedUser = null;
+            _cachedCompanyUser = null;
             var user = new ClaimsPrincipal(new ClaimsIdentity());
+
+            await _logInService.Logout();
             await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }
-        
-        
+
+
+        public CompanyUser getCachedUser()
+        {
+            return _cachedCompanyUser;
+        }
+
+
     }
     
     

@@ -21,11 +21,11 @@ public class UserController : Controller
 
     [Route("/users/")]
     [HttpGet]
-    public async Task<IList<User>> GetAllUsers()
+    public async Task<IList<CompanyUser>> GetAllUsers()
     {
         try
         {
-            IList<User> users = await context.Users.ToListAsync();
+            IList<CompanyUser> users = await context.CompanyUsers.ToListAsync();
             return users;
         }
         catch (Exception e)
@@ -40,11 +40,11 @@ public class UserController : Controller
 
     [Route("/users/{companyId:int}")]
     [HttpGet]
-    public async Task<IList<User>> GetUsersByCompany([FromRoute] int companyId)
+    public async Task<IList<CompanyUser>> GetUsersByCompany([FromRoute] int companyId)
     {
         try
         {
-            IList<User> usersToReturn = await context.Users.Where(u => u.MyCompany.CompanyId == companyId).ToListAsync();
+            IList<CompanyUser> usersToReturn = await context.CompanyUsers.Where(u => u.MyCompany.CompanyId == companyId).ToListAsync();
             return usersToReturn;
         }
         catch (Exception e)
@@ -58,10 +58,16 @@ public class UserController : Controller
 
     [Route("/user/{userId:int}")]
     [HttpGet]
-    public async Task<User> GetUserByUserId([FromRoute] int userId)
+    public async Task<CompanyUser> GetUserByUserId([FromRoute] int userId)
     {
-        User userToReturn =  await context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
-        return userToReturn;
+        Console.WriteLine(userId + "!!!!!!!!!!");
+        
+        
+        CompanyUser companyUserToReturn =  await context.CompanyUsers.FirstOrDefaultAsync(u => u.UserId == userId);
+        companyUserToReturn.TokenCreated = DateTime.Now;
+        companyUserToReturn.TokenExpires = DateTime.Now;
+        companyUserToReturn.MyCompany = await context.CustomerCompanies.FirstAsync(c => c.CompanyId == companyUserToReturn.CompanyId);
+        return companyUserToReturn;
     }
 
  

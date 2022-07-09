@@ -5,32 +5,28 @@ namespace EDHWebApi.Persistance;
 
 public class EDHContext : DbContext
 {
-    
-    
-    
-    public DbSet<User> Users { get; set; }
-    public DbSet<Company> Companies { get; set; }
 
-    // public EDHContext()
-    // {
-    //     if (this.Users.FirstOrDefault(u => u.UserName == "admin")==null || this.Users.FirstOrDefault(u => u.UserName == "Admin")==null)
-    //     {
-    //         this.Users.Add(new User("admin", "admin", "admin@email.com", true, true, "Admin", "admin", "password", 0, 0));
-    //     }   
-    // }
+    protected readonly IConfiguration _configuration;
+    
+    public DbSet<CompanyUser> CompanyUsers { get; set; }
+    public DbSet<CustomerCompany> CustomerCompanies { get; set; }
 
 
+
+    public EDHContext(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source = EDH.db");
-        
+        // optionsBuilder.UseSqlite("Data Source = EDH.db");
+        optionsBuilder.UseNpgsql(_configuration.GetConnectionString("WebApiDatabase"));
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().ToTable("Users");
-        modelBuilder.Entity<Company>().ToTable("Companies");
+        
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EDHContext).Assembly);
 
 

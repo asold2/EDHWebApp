@@ -9,5 +9,5 @@ public interface UserUpdater
     
     
     Task UpdateUserNumberOfRequests(int userId);
-    Task RegisterUser(User user);
+    Task RegisterUser(CompanyUser companyUser);
 }

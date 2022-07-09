@@ -20,11 +20,11 @@ namespace EDHWebApi.Controllers;
         //Returns list of all companies
         [Route("/companies/")]
         [HttpGet]
-        public async Task<IList<Company>> GetAllCompanies()
+        public async Task<IList<CustomerCompany>> GetAllCompanies()
         {
             try
             {
-                IList<Company> companies = await _edhContext.Companies.ToListAsync();
+                IList<CustomerCompany> companies = await _edhContext.CustomerCompanies.ToListAsync();
                 return companies;
             }
             catch (Exception e)
@@ -36,7 +36,7 @@ namespace EDHWebApi.Controllers;
         //Add new company to database
         [Route("/new/company")]
         [HttpPost]
-        public async Task<ActionResult<Company>> AddCompanyAsync([FromBody] Company company)
+        public async Task<ActionResult<CustomerCompany>> AddCompanyAsync([FromBody] CustomerCompany company)
         {
             if (!ModelState.IsValid)
             {
@@ -47,7 +47,7 @@ namespace EDHWebApi.Controllers;
             try
             {
                
-                Company existentcompany = _edhContext.Companies.Where(u => u.Email.Equals(company.Email)).FirstOrDefault();
+                CustomerCompany existentcompany = _edhContext.CustomerCompanies.Where(u => u.Email.Equals(company.Email)).FirstOrDefault();
                 if (existentcompany != null)
                 {
                     return StatusCode(403);
@@ -61,7 +61,7 @@ namespace EDHWebApi.Controllers;
             try
             {
                 company.CreationDate = DateTime.Now;
-                await _edhContext.Companies.AddAsync(company);
+                await _edhContext.CustomerCompanies.AddAsync(company);
                 await _edhContext.SaveChangesAsync();
                 return Created($"/{company.CompanyId}", company);
             }
@@ -73,7 +73,10 @@ namespace EDHWebApi.Controllers;
 
         }
 
-        
+
+      
+
+
         //Remove company by it's Id
             // The users under the company are not currently removed
         [Route("/company/{CompanyId:int}")]
@@ -83,9 +86,9 @@ namespace EDHWebApi.Controllers;
 
             try
             {
-                Company company = _edhContext.Companies.FirstOrDefault(c => c.CompanyId == CompanyId);
-                _edhContext.Companies.Remove(company);
-                foreach (User user in _edhContext.Users.Where(u=>u.CompanyId==company.CompanyId))
+                CustomerCompany company = _edhContext.CustomerCompanies.FirstOrDefault(c => c.CompanyId == CompanyId);
+                _edhContext.CustomerCompanies.Remove(company);
+                foreach (CompanyUser user in _edhContext.CompanyUsers.Where(u=>u.CompanyId==company.CompanyId))
                 {
                     _edhContext.Remove(user);
                 }

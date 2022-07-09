@@ -16,9 +16,9 @@ public class CompanyDataService : ICompaniesData
     }
 
 
-    public async Task RegisterCompany(Company company)
+    public async Task RegisterCompany(CustomerCompany customerCompany)
     {
-        string companyAsJson = JsonSerializer.Serialize(company, new JsonSerializerOptions
+        string companyAsJson = JsonSerializer.Serialize(customerCompany, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
@@ -30,19 +30,29 @@ public class CompanyDataService : ICompaniesData
 
         await HttpClient.PostAsync(uri + "/new/company/", content);
     }
+    
+    
+    
+    
 
-    public async Task<IList<Company>> GetAllCompanies()
+    public async Task<IList<CustomerCompany>> GetAllCompanies()
     {
         string receivedMessage = await HttpClient.GetStringAsync(uri + "/companies/");
-        IList<Company> companies = JsonSerializer.Deserialize<IList<Company>>(receivedMessage);
+        IList<CustomerCompany> companies = JsonSerializer.Deserialize<IList<CustomerCompany>>(receivedMessage);
         return companies;
     }
 
     public async Task DeleteCompany(int companyId)
     {
-        Console.WriteLine("Sending request to delete company 1");
         await HttpClient.DeleteAsync(uri + $"/company/{companyId}");
-        Console.WriteLine("Sending request to delete company 2");
+
+    }
+
+    public async Task<CustomerCompany> getCompanyByCompanyEmail(string email)
+    {
+        string receivedMessage = await HttpClient.GetStringAsync(uri + $"/company/{email}");
+        CustomerCompany customerCompany = JsonSerializer.Deserialize<CustomerCompany>(receivedMessage);
+        return customerCompany;
 
     }
 }
