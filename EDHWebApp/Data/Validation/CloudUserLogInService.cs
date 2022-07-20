@@ -20,7 +20,7 @@ namespace Client.Data.Validation
         /// <summary>
         /// Uri of the 2nd tier server.
         /// </summary>
-        private const string Uri = "https://localhost:7213";
+        private const string Uri = "http://edhwebapi-dev.eu-north-1.elasticbeanstalk.com";
 
 
         
@@ -34,6 +34,7 @@ namespace Client.Data.Validation
         private string loggedInRole;
         private CookieContainer cookies;
         private int loggedInId;
+        private string userName;
         /// <summary>
         /// Constructor dependency injection.
         /// </summary>
@@ -74,7 +75,7 @@ namespace Client.Data.Validation
 
 
             ;
-            var responseMessage = await _httpClient.PostAsync(Uri + "/account", httpContent);
+            var responseMessage = await _httpClient.PostAsync(Uri+ "/account", httpContent);
             
         
             
@@ -84,6 +85,8 @@ namespace Client.Data.Validation
             }
 
             var message = await responseMessage.Content.ReadAsStringAsync();
+
+            Console.WriteLine(message);
 
             
             var result = JsonSerializer.Deserialize<CompanyUser>(message);
@@ -118,6 +121,7 @@ namespace Client.Data.Validation
             
             
             HttpResponseMessage responseMessage = await _httpClient.PostAsync(Uri + "/claims", httpContent);
+            
             
 
             Uri uri = new Uri(Uri+"/claims");
@@ -160,6 +164,17 @@ namespace Client.Data.Validation
             return await _httpClient.PostAsync(Uri+"/logout", httpContent );
         }
 
+        public string GetCurrentUserName()
+        {
+            return userName;
+        }
+
+        public void SetCompanyUserName(string userName)
+        {
+            this.userName = userName;
+        }
+
+     
 
         public void setLoggedInRole(string cachedUserRole)
         {

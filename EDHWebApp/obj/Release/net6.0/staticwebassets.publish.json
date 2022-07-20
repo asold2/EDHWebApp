@@ -1,23 +1,11 @@
 {
   "Version": 1,
-  "Hash": "3CdP8HvMxqhXkP+Kd4UdmfpzbJmZZ2v8DG+8LjNwlI0=",
+  "Hash": "2fAmLSD7ciwc3ys3yRiKC9gfiXapZpzquD3DCss37N0=",
   "Source": "EDHWebApp",
   "BasePath": "_content/EDHWebApp",
   "Mode": "Default",
   "ManifestType": "Publish",
-  "ReferencedProjectsConfiguration": [
-    {
-      "Identity": "C:\\Users\\asold\\RiderProjects\\EDHWebApp\\EDHWebApi\\EDHWebApi.csproj",
-      "Version": 2,
-      "Source": "EDHWebApi",
-      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "",
-      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier",
-      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "",
-      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier"
-    }
-  ],
+  "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {
       "Name": "EDHWebApp\\wwwroot",

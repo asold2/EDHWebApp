@@ -49,6 +49,7 @@ namespace EDHWebApp.Pages
         /// </summary>
         protected string Username = "";
 
+
         protected bool RememberMe = false;
 
         /// <summary>

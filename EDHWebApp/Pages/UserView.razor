@@ -13,9 +13,9 @@
 @using System.Net.Http
 @using System.IO
 @using System.Runtime.CompilerServices
-@using EDHWebApi.Model
 @using EDHWebApp.Data
-@using IdentityModel
+@using EDHWebApp.Model
+
 
 <EditForm Model="_pictureEmail">
     <div class="main_container">
@@ -25,12 +25,20 @@
             <h1>EDH Camera</h1>
         </div>
 
-        <div>
-            <InputFile runant="server" id="selectedPicture" type="file" name="image" accept="image/*" capture="environment" OnChange="GetPicture"></InputFile>
+        
+        
+        
+        
+        <div class="user_name" >
+            <h4> Hi, @FullName</h4>
+        </div>
+
+        <div class="selectedPicture">
+            <InputFile runant="server"  type="file" name="image" accept="image/*" capture="environment" OnChange="GetPicture"></InputFile>
         </div>
     
         <div class="form-group">Payment Type:
-            <InputSelect  Value="@_pictureEmail.PaymentType" style="margin-left: 3em" ValueExpression="@(()=>_pictureEmail.PaymentType)"
+            <InputSelect  Value="@_pictureEmail.PaymentType"  ValueExpression="@(()=>_pictureEmail.PaymentType)"
                           ValueChanged="@((string value) => OnValueChanged(value ))">
     
                 <option >MasterCard</option>
@@ -42,18 +50,20 @@
         </div>
         
         <div>
-            <button class="button" @onclick="CaptureFrame">Send Picture</button> <br />
+            <button class="button-29" style=" " id="imgSender" @onclick="CaptureFrame">Send Picture</button> <br />
         </div>
         
-        <div style="color: #141619" >
-            <p>
-               @success
+        <div id="messageText" style="margin-top: 2em" >
+            <p class="text-success">
+                @success
+            </p>
+            <p class="text-danger">
+                @errorMessage
             </p>
         </div>
         
     </div>
 </EditForm>
-
 
 
 @if (!string.IsNullOrEmpty(frameUri))
@@ -63,15 +73,4 @@
 
 @code{
     
-    protected override async Task OnInitializedAsync()
-    {
-        _pictureEmail.PaymentType = "MasterCard";
-    }
-    
-
-
-  
-   
-
-
 }

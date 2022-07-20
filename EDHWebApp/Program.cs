@@ -6,21 +6,31 @@ using EDHWebApp.Authentication;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using EDHWebApp.Data;
+using EDHWebApp.Data.TokenData;
 using Hanssens.Net;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.ForwardedForHeaderName = "/";
+});
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<ICompaniesData, CompanyDataService>();
 builder.Services.AddSingleton<IUsersData, IUserDataService>();
 builder.Services.AddSingleton<IUserLogInService, CloudUserLogInService>();
+builder.Services.AddScoped<ITokenManager, ITokenManagerImpl>();
 builder.Services.AddSingleton<IEmailSender, EmailSenderImpl>();
 builder.Services.AddControllers();
 
@@ -68,8 +78,13 @@ var cookiePolicyOptions = new CookiePolicyOptions
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseForwardedHeaders();
     app.UseHsts();
+}
+else
+{
+    app.UseDeveloperExceptionPage();
+    app.UseForwardedHeaders();
 }
 
 app.UseHttpsRedirection();
@@ -88,6 +103,9 @@ app.UseCookiePolicy(cookiePolicyOptions);
 
 
 app.UseStaticFiles();
+
+app.UsePathBase("/");
+app.UseRouting();
 
 app.UseRouting();
 

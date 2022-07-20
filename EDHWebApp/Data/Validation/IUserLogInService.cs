@@ -25,5 +25,7 @@ namespace Client.Data.Validation
         int getLoggedInId();
         Task<ClaimsIdentity> getClaimsForUserAsync(CompanyUser companyUser);
         Task<HttpResponseMessage> Logout();
+        string GetCurrentUserName();
+        void SetCompanyUserName(string userName);
     }
 }

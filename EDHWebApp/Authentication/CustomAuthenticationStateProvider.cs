@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Blazored.LocalStorage;
 using Client.Data.Validation;
+using EDHWebApp.Data.TokenData;
 using EDHWebApp.Model;
 using Hanssens.Net;
 using Microsoft.AspNetCore.Authentication;
@@ -18,7 +19,8 @@ namespace EDHWebApp.Authentication
     {
         private readonly IJSRuntime _jsRuntime;
         private readonly IUserLogInService _logInService;
-        private readonly ILocalStorageService _localStorageService;
+        // private readonly ILocalStorageService _localStorageService;
+        private readonly ITokenManager _tokenManager;
         
             
 
@@ -29,13 +31,14 @@ namespace EDHWebApp.Authentication
         
         
         
-        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime, IUserLogInService logInService, ILocalStorageService localStorage)
+        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime, IUserLogInService logInService, ITokenManager tokenManager)
         {
             _jsRuntime = jsRuntime;
             _logInService = logInService;
             _cachedCompanyUser.Role = "";
             _cachedCompanyUser.UserId = 0;
-            _localStorageService = localStorage;
+            // _localStorageService = localStorage;
+            _tokenManager = tokenManager;
         }
         
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -74,7 +77,6 @@ namespace EDHWebApp.Authentication
 
 
             var identity = SetupClaimsForUser(user);
-            // var identity = await _logInService.getClaimsForUserAsync(user);
 
            
             
@@ -83,11 +85,14 @@ namespace EDHWebApp.Authentication
             await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
             _cachedCompanyUser = user;
             
-            // new AuthenticationService().SignInAsync()
             setLoggedInId(_cachedCompanyUser.UserId);
             setLoggedInRole(_cachedCompanyUser.Role);
+            _logInService.SetCompanyUserName(_cachedCompanyUser.Name + " " + _cachedCompanyUser.Surname);
 
-            await _localStorageService.SetItemAsync("refreshToken", user.RefreshToken);
+            
+            await _tokenManager.SetRefreshToke(user.RefreshToken);
+            
+          
             
             NotifyAuthenticationStateChanged(
                 Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));

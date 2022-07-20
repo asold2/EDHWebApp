@@ -7,7 +7,7 @@ namespace EDHWebApp.Data;
 public class IUserDataService : IUsersData
 {
     
-    private string uri = "https://localhost:7213";
+    private string uri = "http://edhwebapi-dev.eu-north-1.elasticbeanstalk.com";
     private readonly HttpClient HttpClient;
 
     public IUserDataService()

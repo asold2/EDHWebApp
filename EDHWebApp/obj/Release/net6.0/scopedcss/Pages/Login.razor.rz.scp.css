@@ -244,3 +244,10 @@ button:hover[b-2yfb4xlbbl] {
     height: 3em;
     
 }
+
+.remMe[b-2yfb4xlbbl]{
+    margin-top: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
