@@ -1,5 +1,7 @@
 # EDHWebApp
+<br>
 This is an application developed for a Danish company as part of an internship.
+<br>
 The purpose of the application is to register companies with multiple users. 
 When a company's employee wishes to register in the application, they fill in a form. 
 Their request is sent to the application's admin's email.
