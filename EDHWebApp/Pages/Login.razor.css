@@ -244,3 +244,10 @@ button:hover {
     height: 3em;
     
 }
+
+.remMe{
+    margin-top: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

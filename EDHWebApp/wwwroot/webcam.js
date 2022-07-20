@@ -27,3 +27,23 @@
 //     let dataUrl = canvas.toDataURL("image/jpeg");
 //     dotNetHelper.invokeMethodAsync('ProcessImage', dataUrl);
 // }
+function hideButton(){
+    document.getElementById("imgSender").style.visibility="hidden";
+    document.getElementById("messageText").style.visibility="hidden";
+}
+function showButton(){
+    document.getElementById("imgSender").style.visibility="visible";
+}
+
+function showTextMessage(){
+
+    document.getElementById("messageText").style.color="#28a745";
+    document.getElementById("messageText").innerHTML="Picture sent successfully!";
+    setTimeout(function(){
+        document.getElementById('messageText').style.display = "none";
+    },3000);
+
+
+
+    document.getElementById("messageText").style.visibility="visible";
+}

@@ -2,10 +2,58 @@
 
 
 <script>
- function PictureSelected() {
-        var filename = document.getElementById('selectedPicture').files[0];
-        console.log(filename)
-    }
 
+    // const video = document.querySelector('video')
+    // document.getElementById('live').onclick = function () {
+    //     navigator.mediaDevices.getUserMedia({
+    //         video: true
+    //     }).then(stream => video.srcObject = stream);
+    // };
+    //
+    // const canvas = document.createElement('canvas');
+    // const img = document.querySelector('img');
+    //
+    // document.getElementById('snap').onclick = function () {
+    //     canvas.width = video.videoWidth;
+    //     canvas.height = video.videoHeight;
+    //     canvas.getContext('2d').drawImage(video, 0, 0);
+    //     video.srcObject.getTracks().forEach(track => track.stop());
+    //     // Other browsers will fall back to image/png  
+    //     $("#imgCapture").css("visibility", "visible");
+    //     $("#imgCapture").attr("src", canvas.toDataURL('image/png'));
+    //     $('#capture_photo').val(canvas.toDataURL('image/png'));
+    //     PostImage();
+    // }
+    //
+    // function PostImage() {
+    //     var photoVal = $('#imgCapture').val();
+    //     if (photoVal != "") {
+    //         $.ajax({
+    //             type: "POST",
+    //             url: '/BasicClaimant/PhotoCapture',
+    //             async: false,
+    //             data: { photoVal: photoVal },
+    //             contentType: "application/html; charset=utf-8",
+    //             dataType: "text",
+    //             success: function (r) {
+    //                 $("#imgCapture").css("visibility", "visible");
+    //                 $("#imgCapture").attr("src", r);
+    //                 $('#capture_photo').val(r);
+    //
+    //             },
+    //             failure: function (response) {
+    //                 alert(response.d);
+    //             }
+    //         });
+    //     }
+    //
+    // }
+    
+    function hideButton(){
+        document.getElementById("imgSender").style.visibility="hidden";
+    }
+    function showButton(){
+        document.getElementById("imgSender").style.visibility="visible";
+    }
 </script>
 
