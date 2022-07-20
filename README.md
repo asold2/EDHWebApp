@@ -12,6 +12,6 @@ The admin registers new users under companies.
 <br>
 The user can take pictures from their phone and send them to their company's email.
 <br>
-The project consist of two .Net Core application, one of which acts as a frontend for users, while the other one handles the logic and a Postgres database.
+The project consists of two .Net Core applications, one of which acts as a frontend for users, while the other one handles the logic and a Postgres database.
 <br>
 The application has been deployed to AWS Elastic Beanstalk using Visual Studio's AWS Toolkit.
