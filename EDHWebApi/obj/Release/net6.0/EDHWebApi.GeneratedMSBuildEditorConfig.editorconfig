@@ -14,3 +14,7 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = C:\Users\asold\RiderProjects\EDHWebApp\EDHWebApi
 build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/asold/RiderProjects/EDHWebApp/EDHWebApi/Views/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 

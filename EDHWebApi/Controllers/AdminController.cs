@@ -86,7 +86,6 @@ public class AdminController : Controller
     [HttpPut]
     public async Task<ActionResult<CompanyUser>> RegisterUser([FromBody] Account account)
     {
-        Console.WriteLine("Registering user");
         CompanyUser existentCompanyUserName = context.CompanyUsers.FirstOrDefault(u => u.Username.Equals(account.Username));
 
         if (existentCompanyUserName != null)
@@ -103,7 +102,6 @@ public class AdminController : Controller
         companyUser.PasswordSalt = passwordSalt;
         companyUser.VerifiedUser = true;
 
-        Console.WriteLine("Added a new user all right");
         
         
         
@@ -114,8 +112,8 @@ public class AdminController : Controller
 
         try
         {
-            _userUpdater.RegisterUser(companyUser);
-          
+            await _userUpdater.RegisterUser(companyUser);
+
             return   Accepted($"/{companyUser.UserId}", companyUser);
         }
         catch (Exception e)

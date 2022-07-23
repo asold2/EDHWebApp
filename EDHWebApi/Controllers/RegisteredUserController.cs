@@ -148,15 +148,12 @@ public class RegisteredUserController : Controller
     [HttpGet]
     public IActionResult GetCookie()
     {
-        Console.WriteLine("in getting claims");
         if (HttpContext.User.IsInRole("Admin"))
         {
-            Console.WriteLine("mf is Admin");
             return new ObjectResult("Admin");
         }
         else
         {
-            Console.WriteLine("mf is User");
 
             return new ObjectResult("User");
         }
@@ -190,12 +187,7 @@ public class RegisteredUserController : Controller
     }
 
 
-    
-    // [Authorize]
-    // [Route("/cookies")]
-    // [HttpGet]
-    // public 
-    //
+
     
     
 
@@ -203,15 +195,14 @@ public class RegisteredUserController : Controller
     [Route("/picture")]
     public async Task<ActionResult> ReceivePictureFromUser([FromBody] PictureEmail pictureEmail)
     {
-
+        
         CompanyUser companyUser = await context.CompanyUsers.FirstAsync(u => u.UserId == pictureEmail.userId);
         var companyId = context.CompanyUsers.FromSqlRaw("select MyCompanyCompanyId from Users where UserId = {0}", companyUser.UserId);
         CustomerCompany usersCompany = await context.CustomerCompanies.FirstAsync(c => c.CompanyId == companyUser.CompanyId);
 
-
         try
         {
-            _userUpdater.UpdateUserNumberOfRequests(pictureEmail.userId);
+            await _userUpdater.UpdateUserNumberOfRequests(pictureEmail.userId);
             if (_emailSender.SendPictureFromUserToCompany(pictureEmail, companyUser, usersCompany.Email) == 1)
             {
                 return Ok();

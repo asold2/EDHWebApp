@@ -2,16 +2,33 @@ using System.Net;
 using System.Text.Json.Serialization;
 using EDHWebApi.Persistance;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddMvc();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<EDHContext>();
+
+
+
+
+// builder.Services.AddEntityFrameworkNpgsql().AddDbContext<DbContext>(options =>
+//     options.UseNpgsql(Configuration.GetConnectionStrig("DbContext")));
+
+/*builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000);
+    options.ListenAnyIP(5001, configure=> configure.UseHttps());
+});*/
+
+builder.WebHost.UseKestrel().UseContentRoot(Directory.GetCurrentDirectory()).UseIISIntegration();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -25,15 +42,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 
-// builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//     .AddCookie(options =>
-//     
-//     {
-//         
-//         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-//         options.SlidingExpiration = true;
-//         options.AccessDeniedPath = "/Forbidden/";
-//     });
+
 builder.Services.AddAuthentication(options => { 
     options.DefaultScheme = "Cookies"; 
 }).AddCookie("Cookies", options => {
@@ -54,10 +63,7 @@ builder.Services.AddCors(options =>
     {  
         // Allow multiple HTTP methods  
         builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS")  
-            // .WithHeaders(  
-            //     HeaderNames.Accept,  
-            //     HeaderNames.ContentType,  
-            //     HeaderNames.Authorization)  
+          
             .AllowCredentials()  
             .SetIsOriginAllowed(origin =>  
             {  
@@ -78,34 +84,49 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 var app = builder.Build();
 
+
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<EDHContext>();
+    dataContext.Database.Migrate();
+}
+//
 var cookiePolicyOptions = new CookiePolicyOptions
 {
-    // MinimumSameSitePolicy = SameSiteMode.Strict,
     Secure = CookieSecurePolicy.Always
 };
-
-// Configure the HTTP request pipeline.
+//
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseStaticFiles();
+app.UseRouting();
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapRazorPages();
+});
+
+
+
+// Configure the HTTP request pipeline.
+
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 
-// app.UseCors("Development");
 
 app.MapControllers();
-app.UseAuthentication();
-app.UseAuthorization();
 
-// app.UseEndpoints(endpoints =>
-// {
-//     endpoints.MapControllers();
-//     endpoints.MapRazorPages();
-// });
+
+
 
 app.MapDefaultControllerRoute();
 app.UseCookiePolicy(cookiePolicyOptions);

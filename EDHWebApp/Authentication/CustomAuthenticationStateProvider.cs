@@ -70,7 +70,6 @@ namespace EDHWebApp.Authentication
             if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
 
 
-            Console.WriteLine("Validating");
             var user = await _logInService.ValidateUserAsync(username, password, rememberMe);
 
 
@@ -131,6 +130,7 @@ namespace EDHWebApp.Authentication
         
         public async Task Logout()
         {
+            await _tokenManager.Logout();
             _cachedCompanyUser = null;
             var user = new ClaimsPrincipal(new ClaimsIdentity());
 
@@ -146,6 +146,29 @@ namespace EDHWebApp.Authentication
         }
 
 
+        public async Task AuthenticateByToken()
+        {
+            CompanyUser user = await _tokenManager.getUserBasedOnRefreshToken();
+            var identity = SetupClaimsForUser(user);
+            
+            var serialisedData = JsonSerializer.Serialize(user);
+            await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
+            _cachedCompanyUser = user;
+            
+            setLoggedInId(_cachedCompanyUser.UserId);
+            setLoggedInRole(_cachedCompanyUser.Role);
+            _logInService.SetCompanyUserName(_cachedCompanyUser.Name + " " + _cachedCompanyUser.Surname);
+
+            
+            await _tokenManager.SetRefreshToke(user.RefreshToken);
+            
+          
+            
+            NotifyAuthenticationStateChanged(
+                Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
+
+
+        }
     }
     
     

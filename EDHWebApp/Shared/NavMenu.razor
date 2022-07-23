@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using EDHWebApp.Authentication
+@inject NavigationManager _navigationManager
+@inject AuthenticationStateProvider _authenticationStateProvider
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">EDHWebApp</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -7,16 +10,21 @@
     </div>
 </div>
 
+
+
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <AuthorizeView Policy="IsUser">
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/UserView">
-                        <span class="oi oi-home" aria-hidden="true"></span> Home
-                    </NavLink>
-                </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/UserView">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
         </AuthorizeView>
-        
+
+
+
+
         <AuthorizeView Policy="IsAdmin">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="/ViewCompanies">
@@ -30,9 +38,17 @@
         @*         <span class="oi oi-plus" aria-hidden="true"></span>  *@
         @*     </NavLink> *@
         @* </div> *@
-
-
     </nav>
+    
+    <div class="text-center">
+        <div>
+            <button class="button-7" @onclick="@OpenAbout">About</button>
+            <button class="button-7"  @onclick="@LogOut">LogOut</button>
+        </div>
+        <div >
+        </div>
+    </div>
+    
 </div>
 
 @code {
@@ -43,6 +59,17 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task LogOut()
+    {
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).Logout();
+        _navigationManager.NavigateTo("/");
+    }
+
+    public void OpenAbout()
+    {
+        _navigationManager.NavigateTo("/About");
     }
 
 }

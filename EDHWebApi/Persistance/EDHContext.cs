@@ -28,10 +28,14 @@ public class EDHContext : DbContext
     {
         
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EDHContext).Assembly);
+        modelBuilder.Entity<CustomerCompany>().ToTable("CustomerCompanies");
+        modelBuilder.Entity<CompanyUser>().ToTable("CompanyUsers");
 
 
-        
-      
+
+
+
+
         // modelBuilder.Entity<CourseAssignment>()
         //   .HasKey(c => new { c.CourseID, c.InstructorID });
     }

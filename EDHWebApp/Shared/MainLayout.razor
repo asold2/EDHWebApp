@@ -4,20 +4,17 @@
 @inject NavigationManager _navigationManager
 @inject AuthenticationStateProvider _authenticationStateProvider
 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 <PageTitle>EDHWebApp</PageTitle>
 
 <div class="page">
     <div class="sidebar">
         <NavMenu/>
     </div>
-    <main>
-        <div class="top-row px-4">
-            <button @onclick="@OpenAbout">About</button>
-            <button class="logout" @onclick="@LogOut">LogOut</button>
+    <main class="container-fluid">
 
-        </div>
-        @* <div class="top-row px-4"> *@
-        @* </div> *@
 
         <article class="content px-4">
             @Body

@@ -39,8 +39,8 @@ public class EmailSenderImpl : EmailSender
 
     public int SendPictureFromUserToCompany(PictureEmail pictureEmail, CompanyUser companyUser, string companyEmail)
     {
-        // String messageToSend = "Hi!\n My name is " + user.Name + " " + user.Surname+ ". \n Here is a receipt from me: \n";
-        string body = "Hi!\n My name is " + companyUser.Name + " " + companyUser.Surname+ ". \n Here is a receipt from me: \n \n \n \n \n <img src=\"cid:picture\" width=\"900\" height=\"900\" />";
+        string body = "Hi!\n My name is " + companyUser.Name + " " + companyUser.Surname + ". \n Here is a receipt from me: \n \n \n \n \n <img src=\"cid:picture\" width=\"900\" height=\"900\" /> \n I have paid with: " + pictureEmail.PaymentType + "\n My email is: " + companyUser.Email;
+
         byte[] image = ConvertStringToByteArrayImage(pictureEmail.Picture);
         MemoryStream image1 = new MemoryStream(image);
         AlternateView av =
@@ -70,6 +70,7 @@ public class EmailSenderImpl : EmailSender
 
 
             smtp.Send(message);
+            Console.WriteLine("Picture sent!");
             return 1;
         }
         catch (Exception e)

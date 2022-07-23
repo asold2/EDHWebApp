@@ -20,16 +20,16 @@ namespace EDHWebApi.Controllers;
         //Returns list of all companies
         [Route("/companies/")]
         [HttpGet]
-        public async Task<IList<CustomerCompany>> GetAllCompanies()
+        public async Task<List<CustomerCompany>> GetAllCompanies()
         {
             try
             {
-                IList<CustomerCompany> companies = await _edhContext.CustomerCompanies.ToListAsync();
-                return companies;
-            }
-            catch (Exception e)
+                List<CustomerCompany> companies = await _edhContext.CustomerCompanies.ToListAsync();
+            return companies;
+
+        }
+        catch (Exception e)
             {
-                Console.WriteLine(e);
                 return null;
             }
         }

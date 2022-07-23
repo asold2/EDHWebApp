@@ -16,9 +16,12 @@
 @using EDHWebApp.Data
 @using EDHWebApp.Model
 
-
+<head>
+    <title>EDH Camera</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 <EditForm Model="_pictureEmail">
-    <div class="main_container">
+    <div class="container">
         <div class="col-md-12">
         </div>
         <div class="text">
@@ -34,7 +37,7 @@
         </div>
 
         <div class="selectedPicture">
-            <InputFile runant="server"  type="file" name="image" accept="image/*" capture="environment" OnChange="GetPicture"></InputFile>
+            <InputFile runant="server"  type="file" name="image" id="picture" accept="image/*" capture="environment" OnChange="GetPicture"></InputFile>
         </div>
     
         <div class="form-group">Payment Type:

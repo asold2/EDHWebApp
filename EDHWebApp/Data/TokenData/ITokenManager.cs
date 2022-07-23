@@ -8,4 +8,6 @@ public interface ITokenManager
     Task<string> GetRefreshToke();
 
     Task<CompanyUser> getUserBasedOnRefreshToken();
+
+    Task Logout();
 }
