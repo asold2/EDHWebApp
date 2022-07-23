@@ -35,5 +35,6 @@ public class UserUpdaterImpl : UserUpdater
     {
         _edhContext.Update(companyUser);
         await _edhContext.SaveChangesAsync();
+        Console.WriteLine("User Updated");
     }
 }

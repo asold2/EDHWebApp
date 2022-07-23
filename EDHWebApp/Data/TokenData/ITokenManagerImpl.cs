@@ -39,7 +39,6 @@ public class ITokenManagerImpl : ITokenManager
 
     public async Task<CompanyUser> getUserBasedOnRefreshToken()
     {
-        Console.WriteLine("In sending message");
         
         TokenBody tokenBody = new TokenBody();
         tokenBody.RefreshToken = await GetRefreshToke();
@@ -51,7 +50,6 @@ public class ITokenManagerImpl : ITokenManager
         );
 
         var response = await HttpClient.PostAsync(uri + "/user/token/", content);
-        Console.WriteLine("Sent request and received back");
         
         if (!response.IsSuccessStatusCode)
         {
@@ -64,7 +62,6 @@ public class ITokenManagerImpl : ITokenManager
         
         var message = await response.Content.ReadAsStringAsync();
 
-        Console.WriteLine("Here is the body        "  + message);
 
         
 
@@ -72,5 +69,10 @@ public class ITokenManagerImpl : ITokenManager
         var result = JsonSerializer.Deserialize<CompanyUser>(message);
 
         return result;
+    }
+
+    public async Task Logout()
+    {
+       await  _localStorageService.ClearAsync();
     }
 }

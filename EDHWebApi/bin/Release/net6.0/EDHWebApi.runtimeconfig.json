@@ -1,6 +1,7 @@
 {
   "runtimeOptions": {
     "tfm": "net6.0",
+    "rollForward": "LatestMinor",
     "frameworks": [
       {
         "name": "Microsoft.NETCore.App",
@@ -14,6 +15,7 @@
     "configProperties": {
       "System.GC.Server": true,
       "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+      "System.Reflection.NullabilityInfoContext.IsSupported": true,
       "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false
     }
   }

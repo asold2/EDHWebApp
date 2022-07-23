@@ -75,7 +75,8 @@ public class UserViewRazor : ComponentBase
             NavigationManager.NavigateTo("/");
         }
 
-         }
+     }
+     
 
      public void OnValueChanged(string value)
      {
@@ -101,8 +102,10 @@ public class UserViewRazor : ComponentBase
         }
 
         Thread.Sleep(1000);
-        // await OnInitializedAsync();
-        NavigationManager.NavigateTo("/UserView");
+       //await JsRuntime.InvokeVoidAsync("refreshDocument ");
+
+        await OnInitializedAsync();
+        // NavigationManager.NavigateTo("/UserView");
 
     }
 

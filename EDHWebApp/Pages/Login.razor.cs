@@ -19,6 +19,7 @@ using Client.Data.Validation;
 using Microsoft.AspNetCore.Components.Web;
 using System.Data.SqlClient;
 using EDHWebApp.Authentication;
+using EDHWebApp.Data.TokenData;
 using EDHWebApp.Model;
 
 
@@ -41,6 +42,7 @@ namespace EDHWebApp.Pages
         /// </summary>
         [Inject]
         private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
 
         [Inject] private IUserLogInService LogInService { get; set; }
 
@@ -69,6 +71,27 @@ namespace EDHWebApp.Pages
         ///
 
 
+        
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).AuthenticateByToken();
+                if (LogInService.getLoggedInRole() == "User")
+                {
+                    NavigationManager.NavigateTo("/UserView");
+                }
+                else if (LogInService.getLoggedInRole() == "Admin")
+                {
+                    NavigationManager.NavigateTo("/ViewCompanies");
+                }
+            }
+            catch (Exception e) {
+                NavigationManager.NavigateTo("/");
+            }
+
+        }
+        
 
 
         protected async Task LoadMainPage()

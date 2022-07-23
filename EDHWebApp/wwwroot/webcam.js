@@ -47,3 +47,8 @@ function showTextMessage(){
 
     document.getElementById("messageText").style.visibility="visible";
 }
+
+function refreshDocument(){
+    document.getElementById("picture").value="";
+   
+}
