@@ -9,32 +9,29 @@
 </head>
 <PageTitle>EDHWebApp</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-    <main class="container-fluid">
 
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu/>
+        </div>
+        @* <div class="container"> *@
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+        <main>
+        
+
+            <article class="content px-4">
+                <div class="container-fluid">
+                    <div class="row">
+                        @Body
+                    </div>
+                </div>
+            </article>
+        </main>
+
+            @* </div> *@
 </div>
 
 @code
 {
-    /// <summary>
-    /// Method used for logout function.
-    /// </summary>
-    private async Task LogOut()
-    {
-        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).Logout();
-        _navigationManager.NavigateTo("/");
-    }
 
-    public void OpenAbout()
-    {
-        _navigationManager.NavigateTo("/About");
-    }
 }

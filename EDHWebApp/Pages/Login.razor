@@ -3,7 +3,9 @@
 @using Client.Data.Validation
 @inherits EDHWebApp.Pages.LoginRazor
 
-
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
 
 
@@ -19,8 +21,9 @@
 
 <div class="container-fluid">
 	<div class="container-login">
+
 		<div class="wrap-login">
-				
+
 			<span class="login-title">
 				<b>Login</b>
 			</span>
@@ -29,14 +32,12 @@
 				<span class="label-input">Username</span>
 				<input class="input" type="text" name="username" placeholder="Type your username" @bind="Username" @onkeyup="@Enter">
 				<span class="focus-input"></span>
-				<i class="fas fa-user-alt"></i>
 			</div>
-
+			
 			<div class="wrap-input">
 				<span class="label-input">Password</span>
 				<input class="input" type="password" placeholder="Type your password" @bind="Password" @onkeyup="@Enter">
 				<span class="focus-input"></span>
-				<i class="fas fa-lock"></i>
 			</div>
 
 			<div class="wrap-login-btn">
@@ -45,27 +46,23 @@
 					Login
 				</button>
 			</div>
-			
+
 			<div class="remMe">
 				Remember me: <input type="checkbox" @bind="RememberMe"/>
 			</div>
-		
+
 			<div class="outlook_login">
-				<img class = "picture" src="Outlook-icon.png" alt="Outlook Sign in" style="font-size:24px;" onclick="@OutlookLogin"/>
-			</div>
-		
-			<div style="color:red">@ErrorMessage</div>
-				
-			<div class="wrap-SignUp">	
-				<a @onclick="LoadCreateAccount" class="signUp" href="#">Sign Up</a>
-			</div>
-		
-			<div>
+				<img class="picture" src="Outlook-icon.png" alt="Outlook Sign in" style="font-size:24px;" onclick="@OutlookLogin"/>
 			</div>
 
+			<div style="color:red">@ErrorMessage</div>
+			
+			<div class="wrap-SignUp">
+				<a @onclick="LoadCreateAccount" class="signUp" href="#">Sign Up</a>
+			</div>
 		</div>
 	</div>
-</div>
+		</div>
 
 @code{
 
